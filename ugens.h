@@ -1,3 +1,4 @@
+/* ugens.h: definition for unit generators */
 USPORTH_UGEN("add", UGEN_ADD, usp_add_init, usp_add_tick, usp_add_free)
 USPORTH_UGEN("div", UGEN_DIV, usp_div_init, usp_div_tick, usp_div_free)
 USPORTH_UGEN("drop", UGEN_DROP, usp_drop_init, usp_drop_tick, usp_drop_free)

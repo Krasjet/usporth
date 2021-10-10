@@ -1,3 +1,4 @@
+/* util.h: utility functions */
 #ifndef USP_UTIL_H
 #define USP_UTIL_H
 #include <stddef.h>

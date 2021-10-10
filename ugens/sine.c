@@ -1,3 +1,4 @@
+/* sine.c: sine oscillator */
 #include <math.h>
 #include <stdlib.h>
 #include "usporth.h"

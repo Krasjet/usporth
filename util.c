@@ -1,3 +1,4 @@
+/* util.c: utility functions */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
