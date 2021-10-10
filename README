@@ -1,10 +1,10 @@
 μsporth
 =======
 
-A minimal rewrite of Paul Batchelor's Sporth [1], a small
-stack-based audio programming language.
+A minimal rewrite of the core of Paul Batchelor's Sporth [1],
+a small stack-based audio programming language.
 
-Currently work in progress.
+Currently a work in progress.
 
 Usage
 -----
