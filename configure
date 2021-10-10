@@ -1,0 +1,32 @@
+#!/bin/sh
+
+die() {
+  printf "error: %s\n" "$1"
+  exit 1
+}
+
+check_pc() {
+  printf "checking for pkg-config..."
+  if command -v pkg-config >/dev/null; then
+    echo yes
+  else
+    echo no
+    die "pkg-config not found."
+  fi
+}
+
+check_pc
+
+printf "checking for jack..."
+if ! pkg-config jack; then
+  echo "no"
+  die "please make sure jack is installed."
+fi
+echo "yes"
+JACK_CFLAGS=$(pkg-config --cflags jack)
+JACK_LDLIBS=$(pkg-config --libs jack)
+
+cat <<EOF > config.mk
+JACK_CFLAGS=${JACK_CFLAGS}
+JACK_LDLIBS=${JACK_LDLIBS}
+EOF

@@ -1,0 +1,25 @@
+μsporth
+=======
+
+A minimal rewrite of Paul Batchelor's Sporth [1], a small
+stack-based audio programming language.
+
+Currently work in progress.
+
+Build
+-----
+
+First, make sure JACK is properly installed on your system.
+
+Then use
+
+    $ ./configure
+
+to generate a `config.mk` file containing compiler flags,
+and run
+
+    $ make
+
+to build the programs.
+
+[1]: https://pbat.ch/proj/sporth.html
