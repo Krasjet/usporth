@@ -20,9 +20,10 @@ Text interface
 Build
 -----
 
-First, make sure JACK is properly installed on your system.
+If you want to build the JACK backend, make sure JACK is
+properly installed on your system.
 
-Then use
+First use
 
     $ ./configure
 
