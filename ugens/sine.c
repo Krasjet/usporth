@@ -1,7 +1,7 @@
 /* sine.c: sine oscillator */
 #include <math.h>
 #include <stdlib.h>
-#include "usporth.h"
+#include <usporth.h>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif

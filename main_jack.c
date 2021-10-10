@@ -4,8 +4,8 @@
 #include <unistd.h>
 #include <signal.h>
 #include <jack/jack.h>
+#include <usporth.h>
 #include "util.h"
-#include "usporth.h"
 
 static volatile int done = 0;
 

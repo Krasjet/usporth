@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>
+#include <usporth.h>
 #include "util.h"
-#include "usporth.h"
 
 #define DEFAULT_SR 44100
 #define DEFAULT_N 10

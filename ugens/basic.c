@@ -1,5 +1,5 @@
 /* basic.c: basic ugens */
-#include "usporth.h"
+#include <usporth.h>
 
 /* 1 2 add => 3 */
 ugen_status ugen_add_init(usp_ctx *ctx, ugen_instance *pugen)
