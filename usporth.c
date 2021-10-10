@@ -29,7 +29,7 @@ void
 usp_push_flt(usp_ctx *ctx, usp_flt f)
 {
   ctx->stack[ctx->stack_top].val.f = f;
-  ctx->stack[ctx->stack_top].type = USP_FLOAT;
+  ctx->stack[ctx->stack_top].type = VAL_FLOAT;
   ctx->stack_top++;
 }
 
@@ -43,7 +43,7 @@ void
 usp_push_str(usp_ctx *ctx, const char *s)
 {
   ctx->stack[ctx->stack_top].val.s = s;
-  ctx->stack[ctx->stack_top].type = USP_STRING;
+  ctx->stack[ctx->stack_top].type = VAL_STRING;
   ctx->stack_top++;
 }
 
