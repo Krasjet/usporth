@@ -8,7 +8,6 @@
 #define DEFAULT_SR 44100
 #define DEFAULT_N 10
 
-static volatile int done = 0;
 static usp_pipe *pipes = NULL;
 static usp_ctx ctx;
 
