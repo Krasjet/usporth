@@ -11,7 +11,7 @@ typedef struct {
 } ugen_sine;
 
 ugen_status
-usp_sine_init(usp_ctx *ctx, ugen_instance *pugen)
+ugen_sine_init(usp_ctx *ctx, ugen_instance *pugen)
 {
   ugen_sine* sine;
 
@@ -28,7 +28,7 @@ usp_sine_init(usp_ctx *ctx, ugen_instance *pugen)
 }
 
 ugen_status
-usp_sine_tick(usp_ctx *ctx, ugen_instance ugen)
+ugen_sine_tick(usp_ctx *ctx, ugen_instance ugen)
 {
   ugen_sine* sine = ugen;
   usp_flt phs, freq;
@@ -46,7 +46,7 @@ usp_sine_tick(usp_ctx *ctx, ugen_instance ugen)
 }
 
 void
-usp_sine_free(ugen_instance ugen)
+ugen_sine_free(ugen_instance ugen)
 {
   free(ugen);
 }
