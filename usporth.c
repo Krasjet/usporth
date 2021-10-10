@@ -226,7 +226,7 @@ tok_flt(const char **pcurr)
   }
 
   tk.type = TK_FLOAT;
-  *pcurr = end_tok;
+  *pcurr = end_tok; /* update progress */
 
   return tk;
 }
@@ -326,10 +326,8 @@ next_tok(const char **pcurr)
     switch (curr[0]) {
     case '_':                               /* _word */
       return tok_word(pcurr);
-    case '\'':                              /* 'str' */
-      return tok_str(pcurr, '\'');
-    case '"':                               /* "str" */
-      return tok_str(pcurr, '"');
+    case '\'': case '"':                    /* "str" */
+      return tok_str(pcurr, curr[0]);
     case '0': case '1': case '2': case '3': /* 1.23 */
     case '4': case '5': case '6': case '7':
     case '8': case '9':
