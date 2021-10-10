@@ -6,6 +6,17 @@ stack-based audio programming language.
 
 Currently work in progress.
 
+Usage
+-----
+
+JACK interface:
+
+  $ usporth_jack input.usp
+
+Text interface
+
+  $ usporth_text [-n nsamples] [-r sr] input.usp
+
 Build
 -----
 
