@@ -207,7 +207,7 @@ tok_eof(void)
 static usp_token
 tok_flt(const char **pcurr)
 {
-  usp_token tk;
+  usp_token tk = { .type = TK_FLOAT };
   const char *curr = *pcurr;
   char *end_num;
 
@@ -215,7 +215,6 @@ tok_flt(const char **pcurr)
   char *end_tok = strpbrk(curr, usp_delims);
 
   /* convert token to float */
-  tk.type = TK_FLOAT;
   tk.val.f = strtoflt(curr, &end_num);
 
   if (end_num != end_tok) {
@@ -231,7 +230,7 @@ tok_flt(const char **pcurr)
 static usp_token
 tok_str(const char **pcurr, char delim)
 {
-  usp_token tk;
+  usp_token tk = { .type = TK_STRING };
   const char *curr = *pcurr + 1; /* skip begin " */
 
   /* find end delimiter */
@@ -242,7 +241,6 @@ tok_str(const char **pcurr, char delim)
     return tk;
   }
 
-  tk.type = TK_STRING;
   tk.val.s = str_init();
   while (*curr && curr < end) {
     /* alllow line continuation with \ at end of line */
@@ -270,13 +268,12 @@ tok_str(const char **pcurr, char delim)
 static usp_token
 tok_word(const char **pcurr)
 {
-  usp_token tk;
+  usp_token tk = { .type = TK_STRING };
   const char *curr = *pcurr + 1; /* skip _ */
 
   /* find end of current token */
   char *end = strpbrk(curr, usp_delims);
 
-  tk.type = TK_STRING;
   tk.val.s = str_init();
   while (*curr && curr < end) {
     str_append(tk.val.s, *curr);
@@ -289,7 +286,7 @@ tok_word(const char **pcurr)
 static usp_token
 tok_ugen(const char **pcurr)
 {
-  usp_token tk;
+  usp_token tk = { .type = TK_UGEN };
   const char *curr = *pcurr;
 
   /* find end of current token */
@@ -304,7 +301,6 @@ tok_ugen(const char **pcurr)
     if (cmp == 0)
       cmp = usp_ugens[i].name[n] - '\0'; /* check ending byte as well */
     if (cmp == 0) {
-      tk.type = TK_UGEN;
       tk.val.ugen = i;
       *pcurr = end; /* update progress */
       return tk;
