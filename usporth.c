@@ -140,7 +140,7 @@ pipes_init(usp_ctx *ctx, usp_pipe *head)
     }
     curr = curr->next;
   }
-  ctx->stack_top = 0;
+  ctx->stack_top = 0; /* pop any vals in stack */
 }
 
 void
@@ -216,6 +216,7 @@ tok_flt(const char **pcurr)
   char *end_tok = strpbrk(curr, usp_delims);
 
   /* convert token to float */
+  tk.type = TK_FLOAT;
   tk.val.f = strtoflt(curr, &end_num);
 
   if (end_num != end_tok) {
@@ -224,10 +225,7 @@ tok_flt(const char **pcurr)
     tk.val.err_msg = "misformatted number";
     return tk;
   }
-
-  tk.type = TK_FLOAT;
   *pcurr = end_tok; /* update progress */
-
   return tk;
 }
 
@@ -267,7 +265,6 @@ tok_str(const char **pcurr, char delim)
     curr++;
   }
   *pcurr = curr + 1; /* update progress (skip end ") */
-
   return tk;
 }
 
@@ -287,7 +284,6 @@ tok_word(const char **pcurr)
     curr++;
   }
   *pcurr = curr; /* update progress */
-
   return tk;
 }
 

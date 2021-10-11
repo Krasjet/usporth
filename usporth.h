@@ -22,7 +22,7 @@ typedef struct usp_val {
 typedef struct usp_ctx {
   /* sample rate */
   usp_flt sr;
-  /* TODO: ftmap */
+  /* TODO: ftmap, reg */
 
   /* stack */
   size_t stack_top;
