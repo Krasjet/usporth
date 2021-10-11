@@ -34,4 +34,49 @@ and run
 
 to build the programs.
 
+Adding a new ugen
+-----------------
+
+To add a new unit generator, e.g. noise,
+
+1. Create `inv.c` in `ugens` directory
+
+2. Define init, tick, and free functions for the new ugen.
+   The name and prototype of the functions must match the
+   following:
+
+     ugen_status ugen_inv_init(usp_ctx *ctx, ugen_instance *pugen)
+     ugen_status ugen_inv_tick(usp_ctx *ctx, ugen_instance ugen)
+     void ugen_inv_free(ugen_instance ugen)
+
+  See existing implementations in `ugens` directory for some
+  examples.
+
+3. Add documentation to `ugens.lua`, e.g.
+
+     ['inv'] = {
+       input = {
+         {name = 'v', type = 'f'},
+       },
+       output = {
+         {name = 'inv', type = 'f'},
+       },
+       description = 'compute 1/v'
+     },
+
+   to the `ugens` table.
+
+4. Run
+
+     $ ./ugens.lua
+
+   to regenerate `ugens.h`
+
+5. Update the makefile to include the new object file
+   `ugens/inv.o` to `OBJ` and add dependency
+
+     ugens/inv.o: usporth.h
+
+   This step might be automated in the future.
+
 [1]: https://pbat.ch/proj/sporth.html
