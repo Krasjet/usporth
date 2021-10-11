@@ -181,8 +181,7 @@ pipes_free(usp_pipe *head)
 /* ----------- tokenize ----------- */
 
 typedef enum usp_toktype {
-  TK_INVALID = -1,
-  TK_FLOAT, TK_STRING, TK_UGEN, TK_EOF
+  TK_INVALID, TK_FLOAT, TK_STRING, TK_UGEN, TK_EOF
 } usp_toktype;
 
 typedef struct usp_token {
@@ -197,11 +196,12 @@ typedef struct usp_token {
 
 static const char* usp_delims = " \n()\t\r\v\f";
 
+static usp_token tok_eof(void) { return (usp_token){ .type = TK_EOF }; }
+
 static usp_token
-tok_eof(void)
+tok_invalid(const char *s)
 {
-  usp_token tk = { .type = TK_EOF };
-  return tk;
+  return (usp_token){ .type = TK_INVALID, .val.err_msg = s };
 }
 
 static usp_token
@@ -216,13 +216,9 @@ tok_flt(const char **pcurr)
 
   /* convert token to float */
   tk.val.f = strtoflt(curr, &end_num);
+  if (end_num != end_tok) /* conversion failed */
+    return tok_invalid("misformatted number");
 
-  if (end_num != end_tok) {
-    /* conversion failed */
-    tk.type = TK_INVALID;
-    tk.val.err_msg = "misformatted number";
-    return tk;
-  }
   *pcurr = end_tok; /* update progress */
   return tk;
 }
@@ -235,11 +231,8 @@ tok_str(const char **pcurr, char delim)
 
   /* find end delimiter */
   char *end = strchr(curr, delim);
-  if (!end) {
-    tk.type = TK_INVALID;
-    tk.val.err_msg = "missing end delimiter";
-    return tk;
-  }
+  if (!end)
+    return tok_invalid("missing end delimiter");
 
   tk.val.s = str_init();
   while (*curr && curr < end) {
@@ -252,11 +245,9 @@ tok_str(const char **pcurr, char delim)
       if (curr == end) /* quote at begining of new line */
         break;
     }
-    /* end of line but no continuation */
-    if (*curr == '\n' || *curr == '\r') {
-      tk.type = TK_INVALID;
+    if (*curr == '\n' || *curr == '\r') { /* end of line, no continuation */
       str_free(tk.val.s);
-      tk.val.err_msg = "missing end delimiter";
+      return tok_invalid("missing end delimiter");
     }
     str_append(tk.val.s, *curr);
     curr++;
@@ -309,9 +300,7 @@ tok_ugen(const char **pcurr)
     else
       max = i;
   }
-  tk.type = TK_INVALID;
-  tk.val.err_msg = "undefined ugen";
-  return tk;
+  return tok_invalid("undefined ugen");
 }
 
 static usp_token
