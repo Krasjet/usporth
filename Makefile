@@ -16,7 +16,8 @@ OBJ = \
 	ugens/in.o \
 	ugens/scale.o \
 	ugens/biscale.o \
-	ugens/metro.o
+	ugens/metro.o \
+	ugens/tgate.o
 OBJ_JACK = ${OBJ} main_jack.o
 OBJ_TEXT = ${OBJ} main_text.o
 
@@ -38,6 +39,7 @@ ugens/in.o: usporth.h
 ugens/scale.o: usporth.h
 ugens/biscale.o: usporth.h
 ugens/metro.o: usporth.h
+ugens/tgate.o: usporth.h
 
 CFLAGS.main_jack.o = ${JACK_CFLAGS}
 main_jack.o: usporth.h util.h

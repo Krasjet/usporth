@@ -17,3 +17,4 @@ USPORTH_UGEN("scale", UGEN_SCALE, ugen_scale_init, ugen_scale_tick, ugen_scale_f
 USPORTH_UGEN("sine", UGEN_SINE, ugen_sine_init, ugen_sine_tick, ugen_sine_free)
 USPORTH_UGEN("sub", UGEN_SUB, ugen_sub_init, ugen_sub_tick, ugen_sub_free)
 USPORTH_UGEN("swap", UGEN_SWAP, ugen_swap_init, ugen_swap_tick, ugen_swap_free)
+USPORTH_UGEN("tgate", UGEN_TGATE, ugen_tgate_init, ugen_tgate_tick, ugen_tgate_free)

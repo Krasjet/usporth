@@ -165,6 +165,17 @@ local ugens = {
     description = 'generate clock signal (impulse train)'
   },
 
+  ['tgate'] = {
+    input = {
+      {name = 'trigger', type = 'f'},
+      {name = 'time', type = 'f'},
+    },
+    output = {
+      {name = 'sample', type = 'f'},
+    },
+    description = 'generate gate signal for `time` seconds on trigger'
+  },
+
   -- add more ugens here
 }
 
