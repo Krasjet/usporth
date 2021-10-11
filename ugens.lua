@@ -53,6 +53,16 @@ local ugens = {
     description = 'divide two numbers (v1 / v2)'
   },
 
+  ['inv'] = {
+    input = {
+      {name = 'v', type = 'f'},
+    },
+    output = {
+      {name = 'inv', type = 'f'},
+    },
+    description = 'compute 1/v'
+  },
+
   ['swap'] = {
     input = {
       {name = 'v1', type = 'f'},

@@ -77,6 +77,21 @@ ugen_status ugen_div_tick(usp_ctx *ctx, ugen_instance ugen)
 }
 void ugen_div_free(ugen_instance ugen) {  }
 
+/* 2 inv => 0.5 */
+ugen_status ugen_inv_init(usp_ctx *ctx, ugen_instance *pugen)
+{
+  usp_flt v = usp_pop_flt(ctx);
+  usp_push_flt(ctx, 1/v);
+  return UGEN_OK;
+}
+ugen_status ugen_inv_tick(usp_ctx *ctx, ugen_instance ugen)
+{
+  usp_flt v = usp_pop_flt(ctx);
+  usp_push_flt(ctx, 1/v);
+  return UGEN_OK;
+}
+void ugen_inv_free(ugen_instance ugen) {  }
+
 /* 1 2 swap => 2 1 */
 ugen_status ugen_swap_init(usp_ctx *ctx, ugen_instance *pugen)
 {
