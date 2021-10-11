@@ -291,24 +291,29 @@ static usp_token
 tok_ugen(const char **pcurr)
 {
   usp_token tk;
-  size_t i;
   const char *curr = *pcurr;
 
   /* find end of current token */
   char *end = strpbrk(curr, usp_delims);
   size_t n = end ? (size_t)(end-curr) : strlen(curr);
 
-  /* find ugen with matching name
-   * TODO: replace with binary search */
-  for (i = 0; i < UGEN_SIZE; ++i) {
-    if (strncmp(curr, usp_ugens[i].name, n) == 0 && usp_ugens[i].name[n] == '\0') {
+  /* find ugen with matching name (binary search) */
+  size_t min = 0, max = UGEN_SIZE;
+  while (min < max) {
+    size_t i = min + (max-min)/2;
+    int cmp = strncmp(usp_ugens[i].name, curr, n);
+    if (cmp == 0)
+      cmp = usp_ugens[i].name[n] - '\0'; /* check ending byte as well */
+    if (cmp == 0) {
       tk.type = TK_UGEN;
       tk.val.ugen = i;
       *pcurr = end; /* update progress */
       return tk;
-    }
+    } else if (cmp < 0)
+      min = i + 1;
+    else
+      max = i;
   }
-
   tk.type = TK_INVALID;
   tk.val.err_msg = "undefined ugen";
   return tk;
