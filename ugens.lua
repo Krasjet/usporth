@@ -155,6 +155,16 @@ local ugens = {
     description = 'scale bipolar input value from [-1,1] to [min,max]'
   },
 
+  ['metro'] = {
+    input = {
+      {name = 'freq', type = 'f'},
+    },
+    output = {
+      {name = 'sample', type = 'f'},
+    },
+    description = 'generate clock signal (impulse train)'
+  },
+
   -- add more ugens here
 }
 
