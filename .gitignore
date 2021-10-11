@@ -4,6 +4,7 @@
 !.gitignore
 !*.c
 !*.h
+!*.lua
 !*.usp
 !README
 !Makefile

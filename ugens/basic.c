@@ -77,18 +77,26 @@ ugen_status ugen_div_tick(usp_ctx *ctx, ugen_instance ugen)
 }
 void ugen_div_free(ugen_instance ugen) {  }
 
-/* 1 2 drop => 1 */
-ugen_status ugen_drop_init(usp_ctx *ctx, ugen_instance *pugen)
+/* 1 2 swap => 2 1 */
+ugen_status ugen_swap_init(usp_ctx *ctx, ugen_instance *pugen)
 {
-  usp_pop_flt(ctx);
+  usp_flt v1, v2;
+  v1 = usp_pop_flt(ctx);
+  v2 = usp_pop_flt(ctx);
+  usp_push_flt(ctx, v1);
+  usp_push_flt(ctx, v2);
   return UGEN_OK;
 }
-ugen_status ugen_drop_tick(usp_ctx *ctx, ugen_instance ugen)
+ugen_status ugen_swap_tick(usp_ctx *ctx, ugen_instance ugen)
 {
-  usp_pop_flt(ctx);
+  usp_flt v1, v2;
+  v1 = usp_pop_flt(ctx);
+  v2 = usp_pop_flt(ctx);
+  usp_push_flt(ctx, v1);
+  usp_push_flt(ctx, v2);
   return UGEN_OK;
 }
-void ugen_drop_free(ugen_instance ugen) {  }
+void ugen_swap_free(ugen_instance ugen) {  }
 
 /* 1 2 3 rot => 2 3 1 */
 ugen_status ugen_rot_init(usp_ctx *ctx, ugen_instance *pugen)
@@ -114,6 +122,19 @@ ugen_status ugen_rot_tick(usp_ctx *ctx, ugen_instance ugen)
   return UGEN_OK;
 }
 void ugen_rot_free(ugen_instance ugen) {  }
+
+/* 1 2 drop => 1 */
+ugen_status ugen_drop_init(usp_ctx *ctx, ugen_instance *pugen)
+{
+  usp_pop_flt(ctx);
+  return UGEN_OK;
+}
+ugen_status ugen_drop_tick(usp_ctx *ctx, ugen_instance ugen)
+{
+  usp_pop_flt(ctx);
+  return UGEN_OK;
+}
+void ugen_drop_free(ugen_instance ugen) {  }
 
 /* 1 dup => 1 1 */
 ugen_status ugen_dup_init(usp_ctx *ctx, ugen_instance *pugen)
@@ -156,24 +177,3 @@ ugen_status ugen_dup2_tick(usp_ctx *ctx, ugen_instance ugen)
   return UGEN_OK;
 }
 void ugen_dup2_free(ugen_instance ugen) {  }
-
-/* 1 2 swap => 2 1 */
-ugen_status ugen_swap_init(usp_ctx *ctx, ugen_instance *pugen)
-{
-  usp_flt v1, v2;
-  v1 = usp_pop_flt(ctx);
-  v2 = usp_pop_flt(ctx);
-  usp_push_flt(ctx, v1);
-  usp_push_flt(ctx, v2);
-  return UGEN_OK;
-}
-ugen_status ugen_swap_tick(usp_ctx *ctx, ugen_instance ugen)
-{
-  usp_flt v1, v2;
-  v1 = usp_pop_flt(ctx);
-  v2 = usp_pop_flt(ctx);
-  usp_push_flt(ctx, v1);
-  usp_push_flt(ctx, v2);
-  return UGEN_OK;
-}
-void ugen_swap_free(ugen_instance ugen) {  }

@@ -140,7 +140,7 @@ pipes_init(usp_ctx *ctx, usp_pipe *head)
     }
     curr = curr->next;
   }
-  ctx->stack_top = 0; /* pop any vals in stack */
+  ctx->stack_top = 0; /* pop any vals on stack */
 }
 
 void

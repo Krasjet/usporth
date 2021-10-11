@@ -37,6 +37,9 @@ CFLAGS.main_jack.o = ${JACK_CFLAGS}
 main_jack.o: usporth.h util.h
 main_text.o: usporth.h util.h
 
+ugens.h: ugens.lua
+	./ugens.lua > ugens.h
+
 .c.o:
 	${CC} ${CFLAGS} ${CFLAGS.$@} -c -o $@ $<
 
