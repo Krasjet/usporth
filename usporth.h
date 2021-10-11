@@ -16,7 +16,7 @@ typedef struct usp_val {
   usp_valtype type;
 } usp_val;
 
-#define STACK_SIZE 32
+#define USP_STACK_SIZE 32
 /* runtime context for usporth that can be
  * queried by ugens */
 typedef struct usp_ctx {
@@ -26,7 +26,7 @@ typedef struct usp_ctx {
 
   /* stack */
   size_t stack_top;
-  usp_val stack[STACK_SIZE];
+  usp_val stack[USP_STACK_SIZE];
 } usp_ctx;
 
 /* stack operations */
@@ -49,7 +49,7 @@ typedef struct usp_ugen {
 } usp_ugen;
 
 /* ugen mapping, can be overwritten */
-extern usp_ugen ugens[];
+extern usp_ugen usp_ugens[];
 /* ugen indices */
 enum {
 #define USPORTH_UGEN(name, macro, f_init, f_tick, f_free) macro,

@@ -10,11 +10,22 @@
 static volatile int done = 0;
 
 static jack_client_t *client = NULL;
-static jack_port_t *port_out = NULL;
+static jack_port_t *port_out = NULL, *port_in = NULL;
 static jack_nframes_t sr;
 
 static usp_pipe *pipes = NULL;
 static usp_ctx ctx;
+
+/* ----------- in ugen redefined ----------- */
+static usp_flt sample_in;
+
+ugen_status
+ugen_jack_in_tick(usp_ctx *ctx, ugen_instance ugen)
+{
+  usp_push_flt(ctx, sample_in);
+  return UGEN_OK;
+}
+/* ----------- /in ugen redefined ----------- */
 
 static void
 on_signal(int signum)
@@ -25,12 +36,14 @@ on_signal(int signum)
 static int
 on_process(jack_nframes_t nframes, void *arg)
 {
-  usp_flt *out;
+  usp_flt *in, *out;
   jack_nframes_t i;
 
+  in  = jack_port_get_buffer(port_in,  nframes);
   out = jack_port_get_buffer(port_out, nframes);
 
   for (i = 0; i < nframes; ++i) {
+    sample_in = in[i];
     pipes_tick(&ctx, pipes);
     out[i] = usp_pop_flt(&ctx);
   }
@@ -58,8 +71,9 @@ jack_init(void)
   if (jack_set_process_callback(client, on_process, NULL) != 0)
     die("fail to set up process callback");
 
-  port_out = jack_port_register(client, "out",
-                                JACK_DEFAULT_AUDIO_TYPE,
+  port_in  = jack_port_register(client, "in", JACK_DEFAULT_AUDIO_TYPE,
+                                JackPortIsInput, 0);
+  port_out = jack_port_register(client, "out", JACK_DEFAULT_AUDIO_TYPE,
                                 JackPortIsOutput, 0);
   if (!port_out)
     die("fail to register ports");
@@ -134,10 +148,12 @@ main(int argc, char *argv[])
   free(src);
   /* 2. init runtime context */
   usporth_init_ctx(&ctx, sr);
-  /* 3. init pipeline */
+  /* 3. overwrite `in` ugen */
+  usp_ugens[UGEN_IN].tick = ugen_jack_in_tick;
+  /* 4. init pipeline */
   pipes_init(&ctx, pipes);
 
-  /* 4. start jack */
+  /* 5. start jack */
   if (jack_activate(client) != 0)
     die("fail to activate client");
   jack_autoconnect();
@@ -153,7 +169,7 @@ main(int argc, char *argv[])
   while (!done)
     sleep(1); /* idle main thread */
 
-  /* 5. clean up */
+  /* 6. clean up */
   jack_finish();
   pipes_free(pipes);
   return 0;

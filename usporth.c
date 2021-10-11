@@ -16,7 +16,7 @@
 #undef USPORTH_UGEN
 
 /* define default ugens */
-usp_ugen ugens[] = {
+usp_ugen usp_ugens[] = {
 #define USPORTH_UGEN(name, macro, f_init, f_tick, f_free) \
   {name, f_init, f_tick, f_free},
 #include "ugens.h"
@@ -99,7 +99,7 @@ pipe_free(usp_pipe *pipe)
     free(pipe);
     break;
   case PIPE_UGEN:
-    ugens[pipe->data.u.index].free(pipe->data.u.handle);
+    usp_ugens[pipe->data.u.index].free(pipe->data.u.handle);
     free(pipe);
     break;
   }
@@ -135,7 +135,7 @@ pipes_init(usp_ctx *ctx, usp_pipe *head)
       usp_push_str(ctx, curr->data.s->str);
       break;
     case PIPE_UGEN:
-      ugens[curr->data.u.index].init(ctx, &curr->data.u.handle);
+      usp_ugens[curr->data.u.index].init(ctx, &curr->data.u.handle);
       break;
     }
     curr = curr->next;
@@ -157,7 +157,7 @@ pipes_tick(usp_ctx *ctx, usp_pipe *head)
       usp_push_str(ctx, curr->data.s->str);
       break;
     case PIPE_UGEN:
-      ugens[curr->data.u.index].tick(ctx, curr->data.u.handle);
+      usp_ugens[curr->data.u.index].tick(ctx, curr->data.u.handle);
       break;
     }
     curr = curr->next;
@@ -301,7 +301,7 @@ tok_ugen(const char **pcurr)
   /* find ugen with matching name
    * TODO: replace with binary search */
   for (i = 0; i < UGEN_SIZE; ++i) {
-    if (strncmp(curr, ugens[i].name, n) == 0 && ugens[i].name[n] == '\0') {
+    if (strncmp(curr, usp_ugens[i].name, n) == 0 && usp_ugens[i].name[n] == '\0') {
       tk.type = TK_UGEN;
       tk.val.ugen = i;
       *pcurr = end; /* update progress */
