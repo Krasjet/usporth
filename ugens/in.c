@@ -4,14 +4,14 @@
 ugen_status
 ugen_in_init(usp_ctx *ctx, ugen_instance *pugen)
 {
-  usp_push_flt(ctx, 0.0f);
+  usp_push_flt(ctx, 0);
   return UGEN_OK;
 }
 
 ugen_status
 ugen_in_tick(usp_ctx *ctx, ugen_instance ugen)
 {
-  usp_push_flt(ctx, 0.0f);
+  usp_push_flt(ctx, 0);
   return UGEN_OK;
 }
 

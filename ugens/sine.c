@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <usporth.h>
 #ifndef M_PI
-#define M_PI 3.14159265358979323846
+#define M_PI FL(3.14159265358979323846)
 #endif
 
 typedef struct {
@@ -22,7 +22,7 @@ ugen_sine_init(usp_ctx *ctx, ugen_instance *pugen)
   *pugen = sine;
 
   usp_pop_flt(ctx); /* freq */
-  usp_push_flt(ctx, 0.0f);
+  usp_push_flt(ctx, 0);
 
   return UGEN_OK;
 }

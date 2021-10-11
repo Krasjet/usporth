@@ -131,6 +131,30 @@ local ugens = {
     description = 'sine oscillator'
   },
 
+  ['scale'] = {
+    input = {
+      {name = 'val', type = 'f'},
+      {name = 'min', type = 'f'},
+      {name = 'max', type = 'f'},
+    },
+    output = {
+      {name = 'sample', type = 'f'},
+    },
+    description = 'scale unipolar input value from [0,1] to [min,max]'
+  },
+
+  ['biscale'] = {
+    input = {
+      {name = 'val', type = 'f'},
+      {name = 'min', type = 'f'},
+      {name = 'max', type = 'f'},
+    },
+    output = {
+      {name = 'sample', type = 'f'},
+    },
+    description = 'scale bipolar input value from [-1,1] to [min,max]'
+  },
+
   -- add more ugens here
 }
 
