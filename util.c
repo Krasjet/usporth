@@ -37,7 +37,7 @@ xrealloc(void *p, size_t s)
 struct str *
 str_init(void)
 {
-  struct str *s = xcalloc(sizeof(struct str), 1);
+  struct str *s = xcalloc(1, sizeof(struct str));
   s->str = xcalloc(16, 1);
   s->capacity = 16;
   s->len = 0;
