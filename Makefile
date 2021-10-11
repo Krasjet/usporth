@@ -44,7 +44,7 @@ main_jack.o: usporth.h util.h
 main_text.o: usporth.h util.h
 
 ugens.h: ugens.lua
-	-./ugens.lua > ugens.h
+	-command -v lua >/dev/null 2>&1 && lua ugens.lua > ugens.h
 
 .c.o:
 	${CC} ${CFLAGS} ${CFLAGS.$@} -c -o $@ $<
