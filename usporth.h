@@ -5,10 +5,12 @@
 
 /* data type for floats */
 typedef float usp_flt;
-#define strtoflt strtof
 /* cast any constant floats to native type. essential for
  * speed since float conversions cannot be optimized out */
 #define FL(x) ((usp_flt)(x))
+/* float functions */
+#define strtoflt strtof
+#define sinflt sinf
 
 /* data type for stack values */
 typedef enum usp_valtype {

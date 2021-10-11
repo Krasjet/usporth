@@ -8,6 +8,7 @@
 
 typedef struct {
   usp_flt phs;
+  usp_flt invsr;
 } ugen_sine;
 
 ugen_status
@@ -19,6 +20,7 @@ ugen_sine_init(usp_ctx *ctx, ugen_instance *pugen)
   if (!sine)
     return UGEN_ERR;
   sine->phs = 0;
+  sine->invsr = 1/ctx->sr;
   *pugen = sine;
 
   usp_pop_flt(ctx); /* freq */
@@ -35,9 +37,9 @@ ugen_sine_tick(usp_ctx *ctx, ugen_instance ugen)
 
   phs = sine->phs;
   freq = usp_pop_flt(ctx);
-  usp_push_flt(ctx, sinf(2*M_PI*phs));
+  usp_push_flt(ctx, sinflt(2*M_PI*phs));
 
-  phs += freq/ctx->sr;
+  phs += freq * sine->invsr;
   while (phs >= 1) phs--;
   while (phs < 0) phs++;
   sine->phs = phs;
