@@ -1,0 +1,3 @@
+# in.usp: amplitude modulate input signal
+12 sine 0.4 * 0.6 + # 12Hz sine wave raised to [0.2, 1]
+in *
