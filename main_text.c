@@ -61,9 +61,8 @@ main(int argc, char *argv[])
       break;
     case 'r':
       sr = atol(optarg);
-      if (sr < 1) {
+      if (sr < 1)
         die("sample rate must be at least 1");
-      }
       break;
     default:
       usage(argv[0]);
