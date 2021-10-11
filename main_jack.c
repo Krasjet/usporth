@@ -104,14 +104,9 @@ read_file(const char *path)
   buf = xcalloc(len + 1, 1);
   read = fread(buf, 1, len, fp);
   if ((long)read < len)
-    goto err;
+    die("fail to read input file %s", path);
   fclose(fp);
   return buf;
-err:
-  if (fp)
-    fclose(fp);
-  free(buf);
-  return NULL;
 }
 
 static void
@@ -131,8 +126,6 @@ main(int argc, char *argv[])
     return 1;
   }
   src = read_file(argv[1]);
-  if (!src)
-    die("fail to read input file %s", argv[1]);
 
   /* 1. evaluate source code */
   pipes = usporth_eval(src);
@@ -144,6 +137,7 @@ main(int argc, char *argv[])
   /* 3. init pipeline */
   pipes_init(&ctx, pipes);
 
+  /* 4. start jack */
   if (jack_activate(client) != 0)
     die("fail to activate client");
   jack_autoconnect();
@@ -159,6 +153,7 @@ main(int argc, char *argv[])
   while (!done)
     sleep(1); /* idle main thread */
 
+  /* 5. clean up */
   jack_finish();
   pipes_free(pipes);
   return 0;
