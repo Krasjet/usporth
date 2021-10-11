@@ -14,7 +14,7 @@ typedef float usp_flt;
 
 /* data type for stack values */
 typedef enum usp_valtype {
-  VAL_FLOAT, VAL_STRING,
+  VAL_FLOAT, VAL_STRING
 } usp_valtype;
 typedef struct usp_val {
   union { usp_flt f; const char *s; } val;
