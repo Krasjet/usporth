@@ -11,6 +11,17 @@
 static usp_pipe *pipes = NULL;
 static usp_ctx ctx;
 
+/* ----------- in ugen redefined ----------- */
+ugen_status
+ugen_text_in_tick(usp_ctx *ctx, ugen_instance ugen)
+{
+  usp_flt in;
+  scanf("%f", &in);
+  usp_push_flt(ctx, in);
+  return UGEN_OK;
+}
+/* ----------- /in ugen redefined ----------- */
+
 static char *
 read_file(const char *path)
 {
@@ -85,16 +96,18 @@ main(int argc, char *argv[])
   free(src);
   /* 2. init runtime context */
   usporth_init_ctx(&ctx, sr);
-  /* 3. init pipeline */
+  /* 3. overwrite `in` ugen */
+  usp_ugens[UGEN_IN].tick = ugen_text_in_tick;
+  /* 4. init pipeline */
   pipes_init(&ctx, pipes);
 
-  /* 4. compute samples */
+  /* 5. compute samples */
   for (i = 0; i < n; ++i) {
     pipes_tick(&ctx, pipes);
     printf("%.9g\n", usp_pop_flt(&ctx));
   }
 
-  /* 5. clean up */
+  /* 6. clean up */
   pipes_free(pipes);
   return 0;
 }
