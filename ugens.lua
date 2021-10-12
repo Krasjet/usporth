@@ -170,7 +170,7 @@ local ugens = {
       {name = 'freq', type = 'f'},
     },
     output = {
-      {name = 'sample', type = 'f'},
+      {name = 'trigger', type = 'f'},
     },
     description = 'generate clock signal (impulse train)'
   },
@@ -178,7 +178,7 @@ local ugens = {
   ['tgate'] = {
     input = {
       {name = 'trigger', type = 'f'},
-      {name = 'time', type = 'f'},
+      {name = 'time (sec)', type = 'f'},
     },
     output = {
       {name = 'sample', type = 'f'},
