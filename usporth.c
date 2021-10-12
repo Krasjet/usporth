@@ -110,8 +110,7 @@ pipes_append(usp_pipe *head, usp_pipe *pipe)
   usp_pipe *curr = head;
 
   if (!head)
-    /* pipe is new head */
-    return pipe;
+    return pipe; /* pipe is new head */
 
   while (curr->next)
     curr = curr->next;

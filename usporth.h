@@ -41,8 +41,7 @@ void usp_push_str(usp_ctx *ctx, const char *s);
 const char *usp_pop_str(usp_ctx *ctx);
 
 typedef enum {
-  UGEN_ERR = 0,
-  UGEN_OK = 1
+  UGEN_ERR = 0, UGEN_OK = 1
 } ugen_status;
 /* handle for ugen's internal state */
 typedef void * ugen_instance;

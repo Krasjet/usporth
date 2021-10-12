@@ -33,7 +33,26 @@ check_jack() {
 	EOF
 }
 
+check_sndfile() {
+	printf "checking for libsndfile..."
+	if pkg-config sndfile; then
+		echo "yes"
+		SF_BINS="usporth_wav"
+		SF_CFLAGS=$(pkg-config --cflags sndfile)
+		SF_LDLIBS=$(pkg-config --libs sndfile)
+	else
+		echo "no"
+		echo "  audio file backend will not be built."
+	fi
+	cat <<-EOF >> config.mk
+		SF_CFLAGS=${SF_CFLAGS}
+		SF_LDLIBS=${SF_LDLIBS}
+		SF_BINS=${SF_BINS}
+	EOF
+}
+
 check_pc
 
 :> config.mk
 check_jack
+check_sndfile

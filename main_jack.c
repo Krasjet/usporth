@@ -126,7 +126,7 @@ read_file(const char *path)
 static void
 usage(const char *name)
 {
-  printf("usage: %s input.usp\n", name);
+  printf("usage: %s in.usp\n", name);
 }
 
 int

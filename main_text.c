@@ -49,7 +49,7 @@ read_file(const char *path)
 static void
 usage(const char *name)
 {
-  printf("usage: %s [-n nsamples] [-r sr] input.usp\n", name);
+  printf("usage: %s [-h] [-n nsamples] [-r sr] in.usp\n", name);
 }
 
 int
@@ -66,7 +66,7 @@ main(int argc, char *argv[])
       usage(argv[0]);
       return 0;
     case 'n':
-       n = atol(optarg);
+      n = atol(optarg);
       if (n < 1)
         die("nsamples must be at least 1");
       break;

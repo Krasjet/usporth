@@ -11,19 +11,36 @@ Usage
 
 JACK interface:
 
-  $ usporth_jack input.usp
+  $ usporth_jack in.usp
 
 Text interface:
 
-  $ usporth_text [-n nsamples] [-r sr] input.usp
+  $ usporth_text [-n nsamples] [-r sr] in.usp
+  $ usporth_text [-n nsamples] [-r sr] in.usp < in.txt
+
+  Examples:
+
+    $ usporth_text -n 20 -r 48000 examples/sine.usp
+    $ echo '1 2 3' | usporth_text -n 3 examples/in.usp
+
+WAV interface:
+
+  $ usporth_wav [-t nsecs] [-r sr] [-o out.wav] in.usp
+  $ usporth_wav [-t nsecs] -i in.wav [-o out.wav] in.usp
+
+  Examples:
+
+    $ usporth_wav -t 3 -r 8000 -o sine.wav examples/sine.usp
+    $ usporth_wav -i sine.wav -o sine_out.wav examples/in.usp
 
 Build
 -----
 
-If you want to build the JACK backend, make sure JACK is
-properly installed on your system.
+To build the JACK interface, you need JACK [2] installed on
+your system, and to build the WAV interface, you need
+libsndfile [3] installed.
 
-First use
+Then use
 
     $ ./configure
 
@@ -80,3 +97,5 @@ To add a new unit generator, e.g. inv,
    This step might be automated in the future.
 
 [1]: https://pbat.ch/proj/sporth.html
+[2]: https://jackaudio.org/
+[3]: https://libsndfile.github.io/libsndfile/
