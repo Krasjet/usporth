@@ -1,4 +1,4 @@
-/* metro.c: generate clock signal (impulse train) */
+/* metro.c: generate clock signal from frequency (impulse train) */
 #include <stdlib.h>
 #include <usporth.h>
 

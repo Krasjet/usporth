@@ -45,7 +45,7 @@ local ugens = {
   ['div'] = {
     input = {
       {name = 'v1', type = 'f'},
-      {name = 'v2', type = 'f'},
+      {name = 'v2', type = 'f', cond = 'x != 0'},
     },
     output = {
       {name = 'quot', type = 'f'},
@@ -55,7 +55,7 @@ local ugens = {
 
   ['inv'] = {
     input = {
-      {name = 'v', type = 'f'},
+      {name = 'v', type = 'f', cond = 'x != 0'},
     },
     output = {
       {name = 'inv', type = 'f'},
@@ -144,8 +144,8 @@ local ugens = {
   ['scale'] = {
     input = {
       {name = 'val', type = 'f'},
-      {name = 'min', type = 'f'},
-      {name = 'max', type = 'f'},
+      {name = 'min', type = 'f', cond = 'x != max'},
+      {name = 'max', type = 'f', cond = 'x != min'},
     },
     output = {
       {name = 'sample', type = 'f'},
@@ -156,8 +156,8 @@ local ugens = {
   ['biscale'] = {
     input = {
       {name = 'val', type = 'f'},
-      {name = 'min', type = 'f'},
-      {name = 'max', type = 'f'},
+      {name = 'min', type = 'f', cond = 'x != max'},
+      {name = 'max', type = 'f', cond = 'x != min'},
     },
     output = {
       {name = 'sample', type = 'f'},
@@ -167,23 +167,47 @@ local ugens = {
 
   ['metro'] = {
     input = {
-      {name = 'freq', type = 'f'},
+      {name = 'freq', type = 'f', cond = '0 <= x <= sr'},
     },
     output = {
       {name = 'trigger', type = 'f'},
     },
-    description = 'generate clock signal (impulse train)'
+    description = 'generate clock signal (impulse train) from frequency'
+  },
+
+  ['dmetro'] = {
+    input = {
+      {name = 'duration (sec)', type = 'f', cond = 'x >= 0'},
+    },
+    output = {
+      {name = 'trigger', type = 'f'},
+    },
+    description = 'generate clock signal (impulse train) from duration'
   },
 
   ['tgate'] = {
     input = {
       {name = 'trigger', type = 'f'},
-      {name = 'time (sec)', type = 'f'},
+      {name = 'time (sec)', type = 'f', cond = 'x >= 0'},
     },
     output = {
-      {name = 'sample', type = 'f'},
+      {name = 'gate', type = 'f'},
     },
     description = 'generate gate signal for `time` seconds on trigger'
+  },
+
+  ['adsr'] = {
+    input = {
+      {name = 'gate', type = 'f'},
+      {name = 'attack (sec)', type = 'f', cond = 'x > 0'},
+      {name = 'decay (sec)', type = 'f', cond = 'x > 0'},
+      {name = 'sustain', type = 'f', cond = 'x > 0'},
+      {name = 'release (sec)', type = 'f', cond = 'x > 0'},
+    },
+    output = {
+      {name = 'envelope', type = 'f'},
+    },
+    description = 'generate adsr envelope from gate signal'
   },
 
   -- add more ugens here
