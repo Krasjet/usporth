@@ -1,4 +1,4 @@
-/* usporth.h: a minimal rewrite of sporth */
+/* usporth.h: a minimal rewrite of sporth core */
 #ifndef USPORTH_H
 #define USPORTH_H
 #include <stddef.h>
