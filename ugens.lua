@@ -201,7 +201,7 @@ local ugens = {
       {name = 'gate', type = 'f'},
       {name = 'attack (sec)', type = 'f', cond = 'x > 0'},
       {name = 'decay (sec)', type = 'f', cond = 'x > 0'},
-      {name = 'sustain', type = 'f', cond = 'x > 0'},
+      {name = 'sustain', type = 'f', cond = '0 < x < 1'},
       {name = 'release (sec)', type = 'f', cond = 'x > 0'},
     },
     output = {
