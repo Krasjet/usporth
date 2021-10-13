@@ -1,4 +1,4 @@
-/* adsr.c: adsr envelope (gate) */
+/* adsr.c: adsr envelope (gate input) */
 #include <stdlib.h>
 #include <math.h>
 #include <usporth.h>

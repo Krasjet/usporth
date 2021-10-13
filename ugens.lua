@@ -60,7 +60,7 @@ local ugens = {
     output = {
       {name = 'inv', type = 'f'},
     },
-    description = 'compute 1/v'
+    description = 'compute 1 / v'
   },
 
   ['swap'] = {
@@ -182,7 +182,7 @@ local ugens = {
     output = {
       {name = 'trigger', type = 'f'},
     },
-    description = 'generate clock signal (impulse train) from duration'
+    description = 'generate equally spaced clock signal (impulse train) from duration'
   },
 
   ['tgate'] = {
@@ -207,7 +207,7 @@ local ugens = {
     output = {
       {name = 'envelope', type = 'f'},
     },
-    description = 'generate adsr envelope from gate signal'
+    description = 'generate exponential adsr envelope from gate signal'
   },
 
   -- add more ugens here
