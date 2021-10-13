@@ -73,12 +73,12 @@ To add a new unit generator, e.g. inv,
 
      ['inv'] = {
        input = {
-         {name = 'v', type = 'f'},
+         {name = 'v', type = 'f', cond = 'x != 0'},
        },
        output = {
          {name = 'inv', type = 'f'},
        },
-       description = 'compute 1/v'
+       description = 'compute 1 / v'
      },
 
    to the `ugens` table.
