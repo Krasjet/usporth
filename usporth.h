@@ -11,6 +11,7 @@ typedef float usp_flt;
 /* float functions */
 #define strtoflt strtof
 #define sinflt sinf
+#define powflt powf
 
 /* data type for stack values */
 typedef enum usp_valtype {
@@ -22,13 +23,18 @@ typedef struct usp_val {
 } usp_val;
 
 #define USP_STACK_SIZE 32
-/* runtime context for usporth that can be
- * queried by ugens */
+#define EXT_MAX 32
+typedef void * usp_ext;
+/* runtime context for usporth that is shared
+ * by all ugens */
 typedef struct usp_ctx {
   /* sample rate */
   usp_flt sr;
-  /* TODO: ftmap, reg */
-
+  /* some ugens need to share data, e.g. table, reg, between
+   * each other. instead of specifying what data to share in
+   * the language, we have a fixed number of generic
+   * "extension" data, and let ugens themselves decide. */
+  usp_ext ext[EXT_MAX];
   /* stack */
   size_t stack_top;
   usp_val stack[USP_STACK_SIZE];

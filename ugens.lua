@@ -210,6 +210,57 @@ local ugens = {
     description = 'generate exponential adsr envelope from gate signal'
   },
 
+  ['ftgen'] = {
+    input = {
+      {name = 'ft name', type = 's'},
+      {name = 'vals', type = 's'},
+    },
+    output = { },
+    description = 'generate function table with space-delimited values'
+  },
+
+  ['ftget'] = {
+    input = {
+      {name = 'index', type = 'f', cond = '0 <= x < ftlen'},
+      {name = 'ft name', type = 's'},
+    },
+    output = {
+      {name = 'val', type = 'f'},
+    },
+    description = 'read from table at index (no interpolation)'
+  },
+
+  ['ftset'] = {
+    input = {
+      {name = 'val', type = 'f'},
+      {name = 'index', type = 'f', cond = '0 <= x < ftlen'},
+      {name = 'ft name', type = 's'},
+    },
+    output = { },
+    description = 'set table value at index'
+  },
+
+  ['tseq'] = {
+    input = {
+      {name = 'trigger', type = 'f'},
+      {name = 'ft name', type = 's'},
+    },
+    output = {
+      {name = 'sequence', type = 'f'},
+    },
+    description = 'trigger controlled sequencer'
+  },
+
+  ['mtof'] = {
+    input = {
+      {name = 'midi', type = 'f'},
+    },
+    output = {
+      {name = 'freq', type = 'f'},
+    },
+    description = 'convert midi note number to frequency'
+  },
+
   -- add more ugens here
 }
 

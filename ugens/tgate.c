@@ -1,4 +1,4 @@
-/* tgate.c: trigger gate signal */
+/* tgate.c: trigger controlled gate signal */
 #include <stdlib.h>
 #include <usporth.h>
 
@@ -9,13 +9,13 @@ typedef struct {
 ugen_status
 ugen_tgate_init(usp_ctx *ctx, ugen_instance *pugen)
 {
-  ugen_tgate* tgate;
+  ugen_tgate* self;
 
-  tgate = calloc(1, sizeof(ugen_tgate));
-  if (!tgate)
+  self = calloc(1, sizeof(ugen_tgate));
+  if (!self)
     return UGEN_ERR;
-  tgate->countdown = 0;
-  *pugen = tgate;
+  self->countdown = 0;
+  *pugen = self;
 
   usp_pop_flt(ctx); /* time */
   usp_pop_flt(ctx); /* trig */
@@ -27,17 +27,17 @@ ugen_tgate_init(usp_ctx *ctx, ugen_instance *pugen)
 ugen_status
 ugen_tgate_tick(usp_ctx *ctx, ugen_instance ugen)
 {
-  ugen_tgate* tgate = ugen;
+  ugen_tgate* self = ugen;
   usp_flt time, trig, out = 0;
 
   time = usp_pop_flt(ctx);
   trig = usp_pop_flt(ctx);
 
   if (trig != 0)
-    tgate->countdown = time * ctx->sr;
-  if (tgate->countdown != 0) {
+    self->countdown = time * ctx->sr;
+  if (self->countdown != 0) {
     out = 1;
-    tgate->countdown--;
+    self->countdown--;
   }
   usp_push_flt(ctx, out);
 

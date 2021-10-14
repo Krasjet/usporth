@@ -28,10 +28,10 @@ xcalloc(size_t n, size_t s)
 void *
 xrealloc(void *p, size_t s)
 {
-  void *new = realloc(p, s);
-  if (!new)
+  void *pnew = realloc(p, s);
+  if (!pnew)
     die("out of memory");
-  return new;
+  return pnew;
 }
 
 struct str *
@@ -55,7 +55,7 @@ str_free(struct str *s)
 void
 str_append(struct str *s, char ch)
 {
-  if (s->len + 1 >= s->capacity) {
+  if (s->capacity <= s->len + 1) {
     s->capacity *= 2;
     s->str = xrealloc(s->str, s->capacity);
   }

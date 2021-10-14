@@ -47,16 +47,16 @@ ratio2pole(double t, double ratio, double sr)
 ugen_status
 ugen_adsr_init(usp_ctx *ctx, ugen_instance *pugen)
 {
-  ugen_adsr* adsr;
+  ugen_adsr* self;
 
-  adsr = calloc(1, sizeof(ugen_adsr));
-  if (!adsr)
+  self = calloc(1, sizeof(ugen_adsr));
+  if (!self)
     return UGEN_ERR;
-  adsr->state = IDLE;
-  adsr->gate = 0;
-  adsr->out = 0;
-  adsr->target = 0;
-  *pugen = adsr;
+  self->state = IDLE;
+  self->gate = 0;
+  self->out = 0;
+  self->target = 0;
+  *pugen = self;
 
   usp_pop_flt(ctx); /* rel */
   usp_pop_flt(ctx); /* sus */
@@ -71,18 +71,18 @@ ugen_adsr_init(usp_ctx *ctx, ugen_instance *pugen)
 ugen_status
 ugen_adsr_tick(usp_ctx *ctx, ugen_instance ugen)
 {
-  ugen_adsr* adsr = ugen;
+  ugen_adsr* self = ugen;
   State state;
   usp_flt gate_old, gate;
   double atk, sus, decay, rel;
   double target, pole, base, sr, out;
 
-  state = adsr->state;
-  gate_old = adsr->gate;
-  out = adsr->out;
-  target = adsr->target;
-  pole = adsr->pole;
-  base = adsr->base;
+  state = self->state;
+  gate_old = self->gate;
+  out = self->out;
+  target = self->target;
+  pole = self->pole;
+  base = self->base;
   sr = ctx->sr;
 
   rel = usp_pop_flt(ctx);
@@ -158,12 +158,12 @@ ugen_adsr_tick(usp_ctx *ctx, ugen_instance ugen)
 
   usp_push_flt(ctx, out);
 
-  adsr->state = state;
-  adsr->gate = gate;
-  adsr->out = out;
-  adsr->target = target;
-  adsr->pole = pole;
-  adsr->base = base;
+  self->state = state;
+  self->gate = gate;
+  self->out = out;
+  self->target = target;
+  self->pole = pole;
+  self->base = base;
 
   return UGEN_OK;
 }

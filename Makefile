@@ -20,7 +20,12 @@ OBJ = \
 	ugens/metro.o \
 	ugens/dmetro.o \
 	ugens/tgate.o \
-	ugens/adsr.o
+	ugens/adsr.o \
+	ugens/ft.o \
+	ugens/ftgen.o \
+	ugens/ftget.o \
+	ugens/ftset.o \
+	ugens/tseq.o
 
 OBJ_JACK = ${OBJ} main_jack.o
 OBJ_TEXT = ${OBJ} main_text.o
@@ -52,12 +57,17 @@ ugens/metro.o: usporth.h
 ugens/dmetro.o: usporth.h
 ugens/tgate.o: usporth.h
 ugens/adsr.o: usporth.h
+ugens/ft.o: usporth.h util.h ugens/ext.h
+ugens/ftgen.o: usporth.h ugens/ext.h
+ugens/ftget.o: usporth.h ugens/ext.h
+ugens/ftset.o: usporth.h ugens/ext.h
+ugens/tseq.o: usporth.h ugens/ext.h
 
 CFLAGS.main_jack.o = ${JACK_CFLAGS}
 CFLAGS.main_wav.o = ${SF_CFLAGS}
-main_jack.o: usporth.h util.h
-main_text.o: usporth.h util.h
-main_wav.o: usporth.h util.h
+main_jack.o: usporth.h util.h ugens.h
+main_text.o: usporth.h util.h ugens.h
+main_wav.o: usporth.h util.h ugens.h
 
 ugens.h: ugens.lua
 	-command -v lua >/dev/null 2>&1 && lua ugens.lua > ugens.h

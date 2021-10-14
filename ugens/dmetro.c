@@ -9,13 +9,13 @@ typedef struct {
 ugen_status
 ugen_dmetro_init(usp_ctx *ctx, ugen_instance *pugen)
 {
-  ugen_dmetro* dmetro;
+  ugen_dmetro* self;
 
-  dmetro = calloc(1, sizeof(ugen_dmetro));
-  if (!dmetro)
+  self = calloc(1, sizeof(ugen_dmetro));
+  if (!self)
     return UGEN_ERR;
-  dmetro->count = 0;
-  *pugen = dmetro;
+  self->count = 0;
+  *pugen = self;
 
   usp_pop_flt(ctx); /* time */
   usp_push_flt(ctx, 0);
@@ -26,11 +26,11 @@ ugen_dmetro_init(usp_ctx *ctx, ugen_instance *pugen)
 ugen_status
 ugen_dmetro_tick(usp_ctx *ctx, ugen_instance ugen)
 {
-  ugen_dmetro* dmetro = ugen;
+  ugen_dmetro* self = ugen;
   usp_flt time, out = 0;
   unsigned long count;
 
-  count = dmetro->count;
+  count = self->count;
   time = usp_pop_flt(ctx);
 
   if (count == 0) {
@@ -41,7 +41,7 @@ ugen_dmetro_tick(usp_ctx *ctx, ugen_instance ugen)
   }
 
   usp_push_flt(ctx, out);
-  dmetro->count = count;
+  self->count = count;
 
   return UGEN_OK;
 }

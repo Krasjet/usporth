@@ -14,14 +14,14 @@ typedef struct {
 ugen_status
 ugen_sine_init(usp_ctx *ctx, ugen_instance *pugen)
 {
-  ugen_sine* sine;
+  ugen_sine* self;
 
-  sine = calloc(1, sizeof(ugen_sine));
-  if (!sine)
+  self = calloc(1, sizeof(ugen_sine));
+  if (!self)
     return UGEN_ERR;
-  sine->phs = 0;
-  sine->invsr = 1/ctx->sr;
-  *pugen = sine;
+  self->phs = 0;
+  self->invsr = 1/ctx->sr;
+  *pugen = self;
 
   usp_pop_flt(ctx); /* freq */
   usp_push_flt(ctx, 0);
@@ -32,17 +32,17 @@ ugen_sine_init(usp_ctx *ctx, ugen_instance *pugen)
 ugen_status
 ugen_sine_tick(usp_ctx *ctx, ugen_instance ugen)
 {
-  ugen_sine* sine = ugen;
+  ugen_sine* self = ugen;
   usp_flt phs, freq;
 
-  phs = sine->phs;
+  phs = self->phs;
   freq = usp_pop_flt(ctx);
   usp_push_flt(ctx, sinflt(2*M_PI*phs));
 
-  phs += freq * sine->invsr;
+  phs += freq * self->invsr;
   while (phs >= 1) phs--;
   while (phs < 0) phs++;
-  sine->phs = phs;
+  self->phs = phs;
 
   return UGEN_OK;
 }

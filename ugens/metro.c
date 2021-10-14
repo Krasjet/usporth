@@ -10,14 +10,14 @@ typedef struct {
 ugen_status
 ugen_metro_init(usp_ctx *ctx, ugen_instance *pugen)
 {
-  ugen_metro* metro;
+  ugen_metro* self;
 
-  metro = calloc(1, sizeof(ugen_metro));
-  if (!metro)
+  self = calloc(1, sizeof(ugen_metro));
+  if (!self)
     return UGEN_ERR;
-  metro->phs = 1; /* to trigger on first sample */
-  metro->invsr = 1/ctx->sr;
-  *pugen = metro;
+  self->phs = 1; /* to trigger on first sample */
+  self->invsr = 1/ctx->sr;
+  *pugen = self;
 
   usp_pop_flt(ctx); /* freq */
   usp_push_flt(ctx, 0);
@@ -28,18 +28,18 @@ ugen_metro_init(usp_ctx *ctx, ugen_instance *pugen)
 ugen_status
 ugen_metro_tick(usp_ctx *ctx, ugen_instance ugen)
 {
-  ugen_metro* metro = ugen;
+  ugen_metro* self = ugen;
   usp_flt phs, freq, out = 0;
 
-  phs = metro->phs;
+  phs = self->phs;
   freq = usp_pop_flt(ctx);
 
   if (phs >= 1) {
     out = 1;
     phs -= 1.0;
   }
-  phs += freq * metro->invsr;
-  metro->phs = phs;
+  phs += freq * self->invsr;
+  self->phs = phs;
 
   usp_push_flt(ctx, out);
 

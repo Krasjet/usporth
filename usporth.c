@@ -151,8 +151,7 @@ pipes_tick(usp_ctx *ctx, usp_pipe *head)
     case PIPE_FLOAT:
       usp_push_flt(ctx, curr->data.f);
       break;
-    case PIPE_STRING:
-      usp_push_str(ctx, curr->data.s->str);
+    case PIPE_STRING: /* strings are ignored at ticking phase */
       break;
     case PIPE_UGEN:
       usp_ugens[curr->data.u.index].tick(ctx, curr->data.u.handle);
@@ -166,9 +165,6 @@ void
 pipes_free(usp_pipe *head)
 {
   usp_pipe *curr = head, *next;
-
-  if (!head)
-    return;
 
   while (curr) {
     next = curr->next;
@@ -350,6 +346,7 @@ void
 usporth_init_ctx(usp_ctx *ctx, int sr)
 {
   ctx->stack_top = 0;
+  memset(ctx->ext, 0, sizeof(ctx->ext));
   ctx->sr = sr;
 }
 

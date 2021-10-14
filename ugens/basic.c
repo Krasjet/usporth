@@ -1,5 +1,6 @@
 /* basic.c: basic ugens */
 #include <usporth.h>
+#include <math.h>
 
 /* 1 2 add => 3 */
 ugen_status ugen_add_init(usp_ctx *ctx, ugen_instance *pugen)
@@ -192,3 +193,25 @@ ugen_status ugen_dup2_tick(usp_ctx *ctx, ugen_instance ugen)
   return UGEN_OK;
 }
 void ugen_dup2_free(ugen_instance ugen) {  }
+
+static usp_flt
+mtof(usp_flt midi)
+{
+  return 440 * powflt(2, (midi-69)/12);
+}
+
+ugen_status ugen_mtof_init(usp_ctx *ctx, ugen_instance *pugen)
+{
+  usp_flt midi;
+  midi = usp_pop_flt(ctx);
+  usp_push_flt(ctx, mtof(midi));
+  return UGEN_OK;
+}
+ugen_status ugen_mtof_tick(usp_ctx *ctx, ugen_instance ugen)
+{
+  usp_flt midi;
+  midi = usp_pop_flt(ctx);
+  usp_push_flt(ctx, mtof(midi));
+  return UGEN_OK;
+}
+void ugen_mtof_free(ugen_instance ugen) {  }
