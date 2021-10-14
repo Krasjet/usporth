@@ -104,7 +104,7 @@ To add a new unit generator, e.g. inv,
      void ugen_inv_free(ugen_instance ugen)
 
   See existing implementations in `ugens` directory for some
-  examples.
+  examples. I recommend starting with sine.c.
 
 3. Add documentation to `ugens.lua`, e.g.
 
