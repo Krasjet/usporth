@@ -49,19 +49,19 @@ usporth_text: ${OBJ_TEXT}
 usporth.o: util.h ugens.h usporth.h
 util.o: util.h
 ugens/basic.o: usporth.h
-ugens/sine.o: usporth.h
+ugens/sine.o: usporth.h util.h
 ugens/in.o: usporth.h
 ugens/scale.o: usporth.h
 ugens/biscale.o: usporth.h
-ugens/metro.o: usporth.h
-ugens/dmetro.o: usporth.h
-ugens/tgate.o: usporth.h
-ugens/adsr.o: usporth.h
+ugens/metro.o: usporth.h util.h
+ugens/dmetro.o: usporth.h util.h
+ugens/tgate.o: usporth.h util.h
+ugens/adsr.o: usporth.h util.h
 ugens/ft.o: usporth.h util.h ugens/ext.h
-ugens/ftgen.o: usporth.h ugens/ext.h
-ugens/ftget.o: usporth.h ugens/ext.h
-ugens/ftset.o: usporth.h ugens/ext.h
-ugens/tseq.o: usporth.h ugens/ext.h
+ugens/ftgen.o: usporth.h util.h ugens/ext.h
+ugens/ftget.o: usporth.h util.h ugens/ext.h
+ugens/ftset.o: usporth.h util.h ugens/ext.h
+ugens/tseq.o: usporth.h util.h ugens/ext.h
 
 CFLAGS.main_jack.o = ${JACK_CFLAGS}
 CFLAGS.main_wav.o = ${SF_CFLAGS}
