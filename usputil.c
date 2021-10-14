@@ -1,8 +1,8 @@
-/* util.c: utility functions */
+/* usputil.c: utility functions */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include "util.h"
+#include "usputil.h"
 
 void
 die(const char *msg, ...)

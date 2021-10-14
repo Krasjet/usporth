@@ -4,7 +4,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "usporth.h"
-#include "util.h"
+#include "usputil.h"
 
 /* declarations for ugens */
 #define USPORTH_UGEN(name, macro, f_init, f_tick, f_free) \
@@ -60,7 +60,6 @@ pipe_newflt(usp_flt f)
   usp_pipe *pipe = xcalloc(1, sizeof(usp_pipe));
   pipe->type = PIPE_FLOAT;
   pipe->data.f = f;
-  pipe->next = NULL;
   return pipe;
 }
 
@@ -70,7 +69,6 @@ pipe_newstr(struct str *s)
   usp_pipe *pipe = xcalloc(1, sizeof(usp_pipe));
   pipe->type = PIPE_STRING;
   pipe->data.s = s;
-  pipe->next = NULL;
   return pipe;
 }
 
@@ -80,7 +78,6 @@ pipe_newugen(size_t index)
   usp_pipe *pipe = xcalloc(1, sizeof(usp_pipe));
   pipe->type = PIPE_UGEN;
   pipe->data.u.index = index;
-  pipe->next = NULL;
   return pipe;
 }
 
@@ -119,10 +116,11 @@ pipes_append(usp_pipe *head, usp_pipe *pipe)
   return head;
 }
 
-void
+ugen_status
 pipes_init(usp_ctx *ctx, usp_pipe *head)
 {
   usp_pipe *curr = head;
+  ugen_status status = UGEN_OK;
 
   while (curr) {
     switch (curr->type) {
@@ -133,18 +131,20 @@ pipes_init(usp_ctx *ctx, usp_pipe *head)
       usp_push_str(ctx, curr->data.s->str);
       break;
     case PIPE_UGEN:
-      usp_ugens[curr->data.u.index].init(ctx, &curr->data.u.handle);
+      status |= usp_ugens[curr->data.u.index].init(ctx, &curr->data.u.handle);
       break;
     }
     curr = curr->next;
   }
   ctx->stack_top = 0; /* pop any vals on stack */
+  return status;
 }
 
-void
+ugen_status
 pipes_tick(usp_ctx *ctx, usp_pipe *head)
 {
   usp_pipe *curr = head;
+  ugen_status status = UGEN_OK;
 
   while (curr) {
     switch (curr->type) {
@@ -154,18 +154,18 @@ pipes_tick(usp_ctx *ctx, usp_pipe *head)
     case PIPE_STRING: /* strings are ignored at ticking phase */
       break;
     case PIPE_UGEN:
-      usp_ugens[curr->data.u.index].tick(ctx, curr->data.u.handle);
+      status |= usp_ugens[curr->data.u.index].tick(ctx, curr->data.u.handle);
       break;
     }
     curr = curr->next;
   }
+  return status;
 }
 
 void
 pipes_free(usp_pipe *head)
 {
   usp_pipe *curr = head, *next;
-
   while (curr) {
     next = curr->next;
     pipe_free(curr);
@@ -369,7 +369,7 @@ usporth_eval(const char *s)
       pipes = pipes_append(pipes, pipe_newugen(tok.val.ugen));
       break;
     default:
-      fprintf(stderr, "[error] parse: %s\n", tok.val.err_msg);
+      fprintf(stderr, "[error] eval: %s\n", tok.val.err_msg);
       return NULL;
     }
   }

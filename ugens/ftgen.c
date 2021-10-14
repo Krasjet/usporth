@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 #include "ext.h"
 
 typedef struct {
@@ -34,7 +34,7 @@ ugen_ftgen_init(usp_ctx *ctx, ugen_instance *pugen)
   /* make sure there're no leftover characters to parse */
   while (*end) {
     if (!isspace(*end)) {
-      fprintf(stderr, "[warn] ftgen: values not parsed completely\n");
+      fprintf(stderr, "[error] ftgen: values must only contain numbers\n");
       return UGEN_ERR;
     }
     end++;

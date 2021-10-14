@@ -1,6 +1,6 @@
 /* util.h: utility functions */
-#ifndef USP_UTIL_H
-#define USP_UTIL_H
+#ifndef USPUTIL_H
+#define USPUTIL_H
 #include <stddef.h>
 
 void die(const char *msg, ...);

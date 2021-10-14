@@ -1,7 +1,7 @@
 /* tgate.c: trigger controlled gate signal */
 #include <stdlib.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 
 typedef struct {
   unsigned long countdown;

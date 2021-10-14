@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <usporth.h>
-#include "util.h"
+#include <usputil.h>
 
 #define DEFAULT_SR 44100
 #define DEFAULT_N 10
@@ -99,7 +99,8 @@ main(int argc, char *argv[])
   /* 3. overwrite `in` ugen */
   usp_ugens[UGEN_IN].tick = ugen_text_in_tick;
   /* 4. init pipeline */
-  pipes_init(&ctx, pipes);
+  if (pipes_init(&ctx, pipes) != UGEN_OK)
+    die("fail to init pipeline");
 
   /* 5. compute samples */
   for (i = 0; i < n; ++i) {

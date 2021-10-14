@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 #include "ext.h"
 
 typedef struct {
@@ -26,7 +26,7 @@ ugen_tseq_init(usp_ctx *ctx, ugen_instance *pugen)
   self->val = 0;
   self->ft = ftmap_find(ctx, name);
   if (!self->ft) {
-      fprintf(stderr, "[warn] tseq: fail to find table %s\n", name);
+      fprintf(stderr, "[error] tseq: fail to find table %s\n", name);
       return UGEN_ERR;
   }
 

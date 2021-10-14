@@ -3,7 +3,7 @@
 #include <math.h>
 #include <float.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 
 /* flush denormal */
 #define FLUSH(x) (x = fabs(x)<((double)FLT_MIN) ? 0 : x)

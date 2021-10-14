@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 #ifndef M_PI
 #define M_PI FL(3.14159265358979323846)
 #endif

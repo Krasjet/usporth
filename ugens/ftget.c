@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 #include "ext.h"
 
 typedef struct {
@@ -23,7 +23,7 @@ ugen_ftget_init(usp_ctx *ctx, ugen_instance *pugen)
 
   self->ft = ftmap_find(ctx, name);
   if (!self->ft) {
-      fprintf(stderr, "[warn] ftget: fail to find table %s\n", name);
+      fprintf(stderr, "[error] ftget: fail to find table %s\n", name);
       return UGEN_ERR;
   }
   usp_push_flt(ctx, self->ft->tbl[index]);

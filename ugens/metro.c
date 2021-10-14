@@ -1,7 +1,7 @@
 /* metro.c: generate clock signal (impulse train) from frequency */
 #include <stdlib.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 
 typedef struct {
   usp_flt phs;

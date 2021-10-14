@@ -11,7 +11,7 @@ BINS = \
 
 OBJ = \
 	usporth.o \
-	util.o \
+	usputil.o \
 	ugens/basic.o \
 	ugens/sine.o \
 	ugens/in.o \
@@ -46,28 +46,28 @@ usporth_wav: ${OBJ_WAV}
 usporth_text: ${OBJ_TEXT}
 	${CC} ${CFLAGS} ${CFLAGS.$@} -o $@ ${OBJ_TEXT} ${LDLIBS} ${LDLIBS.$@}
 
-usporth.o: util.h ugens.h usporth.h
-util.o: util.h
+usporth.o: usputil.h ugens.h usporth.h
+usputil.o: usputil.h
 ugens/basic.o: usporth.h
-ugens/sine.o: usporth.h util.h
+ugens/sine.o: usporth.h usputil.h
 ugens/in.o: usporth.h
 ugens/scale.o: usporth.h
 ugens/biscale.o: usporth.h
-ugens/metro.o: usporth.h util.h
-ugens/dmetro.o: usporth.h util.h
-ugens/tgate.o: usporth.h util.h
-ugens/adsr.o: usporth.h util.h
-ugens/ft.o: usporth.h util.h ugens/ext.h
-ugens/ftgen.o: usporth.h util.h ugens/ext.h
-ugens/ftget.o: usporth.h util.h ugens/ext.h
-ugens/ftset.o: usporth.h util.h ugens/ext.h
-ugens/tseq.o: usporth.h util.h ugens/ext.h
+ugens/metro.o: usporth.h usputil.h
+ugens/dmetro.o: usporth.h usputil.h
+ugens/tgate.o: usporth.h usputil.h
+ugens/adsr.o: usporth.h usputil.h
+ugens/ft.o: usporth.h usputil.h ugens/ext.h
+ugens/ftgen.o: usporth.h usputil.h ugens/ext.h
+ugens/ftget.o: usporth.h usputil.h ugens/ext.h
+ugens/ftset.o: usporth.h usputil.h ugens/ext.h
+ugens/tseq.o: usporth.h usputil.h ugens/ext.h
 
 CFLAGS.main_jack.o = ${JACK_CFLAGS}
 CFLAGS.main_wav.o = ${SF_CFLAGS}
-main_jack.o: usporth.h util.h ugens.h
-main_text.o: usporth.h util.h ugens.h
-main_wav.o: usporth.h util.h ugens.h
+main_jack.o: usporth.h usputil.h ugens.h
+main_text.o: usporth.h usputil.h ugens.h
+main_wav.o: usporth.h usputil.h ugens.h
 
 ugens.h: ugens.lua
 	-command -v lua >/dev/null 2>&1 && lua ugens.lua > ugens.h

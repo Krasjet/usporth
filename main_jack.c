@@ -5,7 +5,7 @@
 #include <signal.h>
 #include <jack/jack.h>
 #include <usporth.h>
-#include "util.h"
+#include <usputil.h>
 
 static volatile int done = 0;
 
@@ -151,7 +151,8 @@ main(int argc, char *argv[])
   /* 3. overwrite `in` ugen */
   usp_ugens[UGEN_IN].tick = ugen_jack_in_tick;
   /* 4. init pipeline */
-  pipes_init(&ctx, pipes);
+  if (pipes_init(&ctx, pipes) != UGEN_OK)
+    die("fail to init pipeline");
 
   /* 5. start jack */
   if (jack_activate(client) != 0)

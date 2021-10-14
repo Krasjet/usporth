@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <usporth.h>
-#include <util.h>
+#include <usputil.h>
 #include "ext.h"
 
 ftmap *

@@ -47,7 +47,7 @@ void usp_push_str(usp_ctx *ctx, const char *s);
 const char *usp_pop_str(usp_ctx *ctx);
 
 typedef enum {
-  UGEN_ERR = 0, UGEN_OK = 1
+  UGEN_OK = 0, UGEN_ERR = 1
 } ugen_status;
 /* handle for ugen's internal state */
 typedef void * ugen_instance;
@@ -94,8 +94,8 @@ typedef struct usp_pipe {
 /* append pipe to the end of the pipeline. returns new head */
 usp_pipe *pipes_append(usp_pipe *head, usp_pipe *pipe);
 /* run pipeline in sequence */
-void pipes_init(usp_ctx *ctx, usp_pipe *head);
-void pipes_tick(usp_ctx *ctx, usp_pipe *head);
+ugen_status pipes_init(usp_ctx *ctx, usp_pipe *head);
+ugen_status pipes_tick(usp_ctx *ctx, usp_pipe *head);
 void pipes_free(usp_pipe *head);
 
 /* init runtime context */
