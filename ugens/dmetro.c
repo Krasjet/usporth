@@ -1,4 +1,4 @@
-/* dmetro.c: generate clock signal from duration (impulse train) */
+/* dmetro.c: generate clock signal (impulse train) from duration */
 #include <stdlib.h>
 #include <usporth.h>
 #include <util.h>
