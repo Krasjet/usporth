@@ -370,6 +370,7 @@ usporth_eval(const char *s)
       break;
     default:
       fprintf(stderr, "[error] eval: %s\n", tok.val.err_msg);
+      pipes_free(pipes);
       return NULL;
     }
   }

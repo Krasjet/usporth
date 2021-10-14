@@ -53,6 +53,8 @@ void
 ugen_ftgen_free(ugen_instance ugen)
 {
   ugen_ftgen* self = ugen;
+  if (!self)
+    return;
   ftmap_free(self->ft);
-  free(ugen);
+  free(self);
 }
