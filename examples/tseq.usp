@@ -1,5 +1,7 @@
 # tseq.usp: triggered sequencer
-_seq "60 62 63 67" ftgen # generate midi sequence to seq
+
+# generate midi sequence to table "seq"
+_seq "60 62 63 67" ftgen
 
 5 metro dup # 5Hz clock, one for tseq, one for tgate
 _seq tseq mtof sine

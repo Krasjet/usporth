@@ -1,3 +1,6 @@
 # sine.usp: frequency modulated sine wave
-6 sine 40 *
-440 + sine 0.3 *
+
+6 sine 40 * # fm = 6Hz, I = 40
+440 + sine  # fc = 440Hz
+
+0.3 * # volume

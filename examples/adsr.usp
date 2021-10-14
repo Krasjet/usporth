@@ -1,9 +1,10 @@
 # adsr.usp: 1Hz beating
+
 1 metro 0.2 tgate
 # A   D   S   R
 0.1 0.1 0.9 1.5 adsr
-# enveloped signal
-4 sine 20 * 90 + sine
+
+4 sine 20 * 90 + sine # enveloped signal
 *
-# volume
-0.6 *
+
+0.6 * # volume

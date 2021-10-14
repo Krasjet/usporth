@@ -1,5 +1,7 @@
 # biscale.usp: amplitude modulated sine wave
+
 440 sine
 # 12Hz sine envelope raised to [0.1,0.3]
 12 sine 0.1 0.3 biscale
 *
+0.3 * # volume
