@@ -1,7 +1,8 @@
 /* ftset.c: set table value */
-#include <usporth.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <usporth.h>
+#include <util.h>
 #include "ext.h"
 
 typedef struct {
@@ -16,10 +17,7 @@ ugen_ftset_init(usp_ctx *ctx, ugen_instance *pugen)
   size_t index;
   usp_flt val;
 
-  self = calloc(1, sizeof(ugen_ftset));
-  if (!self)
-    return UGEN_ERR;
-  *pugen = self;
+  *pugen = self = xcalloc(1, sizeof(ugen_ftset));
 
   name = usp_pop_str(ctx);
   index = usp_pop_flt(ctx);

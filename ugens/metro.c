@@ -1,6 +1,7 @@
 /* metro.c: generate clock signal from frequency (impulse train) */
 #include <stdlib.h>
 #include <usporth.h>
+#include <util.h>
 
 typedef struct {
   usp_flt phs;
@@ -12,12 +13,9 @@ ugen_metro_init(usp_ctx *ctx, ugen_instance *pugen)
 {
   ugen_metro* self;
 
-  self = calloc(1, sizeof(ugen_metro));
-  if (!self)
-    return UGEN_ERR;
+  *pugen = self = xcalloc(1, sizeof(ugen_metro));
   self->phs = 1; /* to trigger on first sample */
   self->invsr = 1/ctx->sr;
-  *pugen = self;
 
   usp_pop_flt(ctx); /* freq */
   usp_push_flt(ctx, 0);

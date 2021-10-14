@@ -1,8 +1,9 @@
 /* ftgen.c: generate function table */
-#include <usporth.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <usporth.h>
+#include <util.h>
 #include "ext.h"
 
 typedef struct {
@@ -16,10 +17,7 @@ ugen_ftgen_init(usp_ctx *ctx, ugen_instance *pugen)
   const char *name, *start;
   char *end;
 
-  self = calloc(1, sizeof(ugen_ftgen));
-  if (!self)
-    return UGEN_ERR;
-  *pugen = self;
+  *pugen = self = xcalloc(1, sizeof(ugen_ftgen));
 
   start = usp_pop_str(ctx);
   name = usp_pop_str(ctx);

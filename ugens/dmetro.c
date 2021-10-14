@@ -1,6 +1,7 @@
 /* dmetro.c: generate clock signal from duration (impulse train) */
 #include <stdlib.h>
 #include <usporth.h>
+#include <util.h>
 
 typedef struct {
   unsigned long count;
@@ -11,11 +12,8 @@ ugen_dmetro_init(usp_ctx *ctx, ugen_instance *pugen)
 {
   ugen_dmetro* self;
 
-  self = calloc(1, sizeof(ugen_dmetro));
-  if (!self)
-    return UGEN_ERR;
+  *pugen = self = xcalloc(1, sizeof(ugen_dmetro));
   self->count = 0;
-  *pugen = self;
 
   usp_pop_flt(ctx); /* time */
   usp_push_flt(ctx, 0);

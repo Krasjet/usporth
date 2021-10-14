@@ -1,8 +1,9 @@
 /* adsr.c: adsr envelope (gate input) */
 #include <stdlib.h>
 #include <math.h>
-#include <usporth.h>
 #include <float.h>
+#include <usporth.h>
+#include <util.h>
 
 /* flush denormal */
 #define FLUSH(x) (x = fabs(x)<((double)FLT_MIN) ? 0 : x)
@@ -49,14 +50,11 @@ ugen_adsr_init(usp_ctx *ctx, ugen_instance *pugen)
 {
   ugen_adsr* self;
 
-  self = calloc(1, sizeof(ugen_adsr));
-  if (!self)
-    return UGEN_ERR;
+  *pugen = self = xcalloc(1, sizeof(ugen_adsr));
   self->state = IDLE;
   self->gate = 0;
   self->out = 0;
   self->target = 0;
-  *pugen = self;
 
   usp_pop_flt(ctx); /* rel */
   usp_pop_flt(ctx); /* sus */

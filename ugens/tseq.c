@@ -1,7 +1,8 @@
 /* tseq.c: trigger controlled sequencer */
 #include <stdlib.h>
-#include <usporth.h>
 #include <stdio.h>
+#include <usporth.h>
+#include <util.h>
 #include "ext.h"
 
 typedef struct {
@@ -16,10 +17,7 @@ ugen_tseq_init(usp_ctx *ctx, ugen_instance *pugen)
   ugen_tseq* self;
   const char *name;
 
-  self = calloc(1, sizeof(ugen_tseq));
-  if (!self)
-    return UGEN_ERR;
-  *pugen = self;
+  *pugen = self = xcalloc(1, sizeof(ugen_tseq));
 
   name = usp_pop_str(ctx);
   usp_pop_flt(ctx); /* trig */

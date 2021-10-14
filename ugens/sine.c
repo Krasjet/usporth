@@ -2,6 +2,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <usporth.h>
+#include <util.h>
 #ifndef M_PI
 #define M_PI FL(3.14159265358979323846)
 #endif
@@ -16,12 +17,9 @@ ugen_sine_init(usp_ctx *ctx, ugen_instance *pugen)
 {
   ugen_sine* self;
 
-  self = calloc(1, sizeof(ugen_sine));
-  if (!self)
-    return UGEN_ERR;
+  *pugen = self = xcalloc(1, sizeof(ugen_sine));
   self->phs = 0;
   self->invsr = 1/ctx->sr;
-  *pugen = self;
 
   usp_pop_flt(ctx); /* freq */
   usp_push_flt(ctx, 0);

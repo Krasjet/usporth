@@ -1,6 +1,7 @@
 /* tgate.c: trigger controlled gate signal */
 #include <stdlib.h>
 #include <usporth.h>
+#include <util.h>
 
 typedef struct {
   unsigned long countdown;
@@ -11,11 +12,8 @@ ugen_tgate_init(usp_ctx *ctx, ugen_instance *pugen)
 {
   ugen_tgate* self;
 
-  self = calloc(1, sizeof(ugen_tgate));
-  if (!self)
-    return UGEN_ERR;
+  *pugen = self = calloc(1, sizeof(ugen_tgate));
   self->countdown = 0;
-  *pugen = self;
 
   usp_pop_flt(ctx); /* time */
   usp_pop_flt(ctx); /* trig */
