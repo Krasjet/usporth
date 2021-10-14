@@ -95,16 +95,31 @@ To add a new unit generator, e.g. inv,
 
 1. Create `inv.c` in `ugens` directory.
 
-2. Define init, tick, and free functions for the new ugen.
-   The name and prototype of the functions must match the
-   following:
+2. Define `init`, `tick`, and `free` functions for the new
+   ugen. The name and prototype of the functions must match
+   the following pattern:
 
      ugen_status ugen_inv_init(usp_ctx *ctx, ugen_instance *pugen)
      ugen_status ugen_inv_tick(usp_ctx *ctx, ugen_instance ugen)
      void ugen_inv_free(ugen_instance ugen)
 
-  See existing implementations in `ugens` directory for some
-  examples. I recommend starting with sine.c.
+   `ugen_instance` is how the ugen keeps an internal state.
+   If the ugen needs an internal state, you need to store it
+   in `pugen` during the init phase. Then the state will be
+   available to you via the `ugen` argument during the tick
+   and free phase. See existing implementations in `ugens`
+   directory for some examples. I recommend starting with
+   `sine.c`.
+
+   I also recommend checking out `ftgen.c`. It shows you how
+   to use "extension data", which is how data can be shared
+   between different ugens. It also demonstrate two
+   important quirks
+
+     1. String arguments are only pushed onto the stack in
+        init phase, not in tick phase.
+     2. In the `free` function, you must make sure the
+        program doesn't crash when `ugen` is NULL.
 
 3. Add documentation to `ugens.lua`, e.g.
 
@@ -128,7 +143,7 @@ To add a new unit generator, e.g. inv,
    for this.
 
 5. Update the makefile to include the new object file
-   `ugens/inv.o` to `OBJ` and add dependency
+   `ugens/inv.o` to `OBJ` and add header dependency
 
      ugens/inv.o: usporth.h
 
