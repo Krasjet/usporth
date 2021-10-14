@@ -1,5 +1,3 @@
-#!/usr/bin/env lua
-
 -- ugens.lua: description of unit generators,
 --            also generates ugens.h
 

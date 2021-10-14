@@ -1,6 +1,7 @@
-include config.mk
+-include config.mk
 
 CC = cc
+LUA = lua
 CFLAGS = -std=c99 -Os -Wall -Wextra -pedantic -Wno-unused-parameter -I.
 LDLIBS = -lm
 
@@ -70,7 +71,7 @@ main_text.o: usporth.h usputil.h ugens.h
 main_wav.o: usporth.h usputil.h ugens.h
 
 ugens.h: ugens.lua
-	-command -v lua >/dev/null 2>&1 && lua ugens.lua > ugens.h
+	-command -v ${LUA} >/dev/null 2>&1 && ${LUA} ugens.lua > ugens.h
 
 .c.o:
 	${CC} ${CFLAGS} ${CFLAGS.$@} -c -o $@ $<
