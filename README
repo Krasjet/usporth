@@ -38,16 +38,49 @@ Build
 
 To build the JACK interface, you need JACK [2] installed on
 your system, and to build the WAV interface, you need
-libsndfile [3] installed.
+libsndfile [3] installed. If you want to add new ugens, you
+also need to have lua installed.
 
-Then use
+The text interface only requires a C99-compatible C compiler
+to build.
 
-    $ ./configure
+For Arch-based distros, you can use install all the optional
+dependencies by
+
+  $ pacman -S jack2 libsndfile lua
+
+For Debian-based distros, install by
+
+  $ apt-get install libjack-jackd2-dev libsndfile1-dev lua5.1
+
+For macOS, you can use Homebrew [4]:
+
+  $ brew install pkgconf jack libsndfile lua
+
+For Windows, you can use MSYS2 with MinGW [5]:
+
+  $ pacman -S pkg-config mingw-w64-x86_64-libsndfile mingw-w64-x86_64-lua
+
+  For JACK, you need to build it from source:
+
+    $ pacman -S git base-devel python mingw-w64-x86_64-toolchain
+    $ git clone git://github.com/jackaudio/jack2.git
+    $ cd jack2
+    $ ./waf configure \
+          --prefix=${MINGW_PREFIX} \
+          --check-c-compiler=gcc \
+          --check-cxx-compiler=g++
+    $ ./waf build
+    $ ./waf install
+
+After you have sorted out the dependencies, use
+
+  $ ./configure
 
 to generate a `config.mk` file containing compiler flags,
 and run
 
-    $ make
+  $ make
 
 to build the programs.
 
@@ -100,3 +133,5 @@ To add a new unit generator, e.g. inv,
 [1]: https://pbat.ch/proj/sporth.html
 [2]: https://jackaudio.org/
 [3]: https://libsndfile.github.io/libsndfile/
+[4]: https://brew.sh/
+[5]: https://www.msys2.org/
