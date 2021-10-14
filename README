@@ -87,7 +87,8 @@ To add a new unit generator, e.g. inv,
 
      $ ./ugens.lua
 
-   to regenerate `ugens.h`.
+   to regenerate `ugens.h`. You need to have lua installed
+   for this.
 
 5. Update the makefile to include the new object file
    `ugens/inv.o` to `OBJ` and add dependency
