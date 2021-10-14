@@ -23,7 +23,6 @@ ugen_ftgen_init(usp_ctx *ctx, ugen_instance *pugen)
   name = usp_pop_str(ctx);
 
   self->ft = ftmap_new(ctx, name, 0);
-
   for (;;) {
     usp_flt v = strtoflt(start, &end);
     if (start == end)
@@ -31,6 +30,7 @@ ugen_ftgen_init(usp_ctx *ctx, ugen_instance *pugen)
     ftmap_push(self->ft, v);
     start = end;
   }
+
   /* make sure there're no leftover characters to parse */
   while (*end) {
     if (!isspace(*end)) {
@@ -39,7 +39,6 @@ ugen_ftgen_init(usp_ctx *ctx, ugen_instance *pugen)
     }
     end++;
   }
-
   return UGEN_OK;
 }
 
