@@ -356,8 +356,7 @@ usporth_eval(const char *s)
   usp_token tok;
   usp_pipe *pipes = NULL;
 
-  for (tok = next_tok(&s); tok.type != TK_EOF;
-       tok = next_tok(&s)) {
+  while ((tok = next_tok(&s)).type != TK_EOF) {
     switch(tok.type) {
     case TK_FLOAT:
       pipes = pipes_append(pipes, pipe_newflt(tok.val.f));
