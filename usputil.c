@@ -38,8 +38,8 @@ struct str *
 str_init(void)
 {
   struct str *s = xcalloc(1, sizeof(struct str));
-  s->str = xcalloc(16, 1);
-  s->capacity = 16;
+  s->str = xcalloc(8, 1);
+  s->capacity = 8;
   s->len = 0;
   return s;
 }
