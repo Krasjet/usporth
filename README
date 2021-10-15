@@ -4,94 +4,101 @@
 A minimal rewrite of the core of Paul Batchelor's Sporth [1],
 a small stack-based audio programming language.
 
-Currently a work in progress.
+The main goal of μsporth is to create a self-contained audio
+programming language that is actually possible to extend and
+comprehend completely within one or two hours, given some C
+programming background.
 
-Usage
------
+The stack-based approach of Sporth is great for this goal,
+but the original implementation is a bit convoluted and it
+is mainly a wrapper of Soundpipe for personal use. It's not
+straightforward to make it your own. Though luckily, the
+concept of Sporth is so simple that many parts can be
+greatly simplified if you rethink it from scratch.
 
-JACK interface:
+μsporth implements most of the core features of Sporth in
+around 500 lines of C (`usporth.c` + `usporth.h`). It is
+probably even more extensible since the DSP part is now
+completely independent of the IO part. This is why multiple
+interfaces to μsporth could be implemented as independent
+standalone programs:
 
-  $ usporth_jack in.usp
+  usporth_text: text interface, mainly for debugging
+  usporth_jack: real-time audio interface via JACK
+  usporth_wav:  offline rendering interface via libsndfile
 
-Text interface:
+μsporth doesn't include all the unit generators in Sporth.
+Existing ugens are mostly to demonstrate how you can extend
+and use the language. You can treat it as a "bring your own
+ugens" version of Sporth, a blank slate for you to implement
+your own language, also a great playground to experiment
+with DSP algorithms in C.
 
-  $ usporth_text [-n nsamples] [-r sr] in.usp
-  $ usporth_text [-n nsamples] [-r sr] in.usp < in.txt
+How to read
+-----------
 
-  Examples:
+To understand the implementation of μsporth, I suggest you
+start with "The Stack" section of the Sporth Cookbook
 
-    $ usporth_text -n 20 -r 48000 examples/sine.usp
-    $ echo '1 2 3' | usporth_text -n 3 examples/in.usp
+  https://pbat.ch/proj/cook/stack.html
 
-WAV interface:
+Notice that the `sine` ugen of μsporth doesn't include the
+amplitude parameter, so
 
-  $ usporth_wav [-t nsecs] [-r sr] [-o out.wav] in.usp
-  $ usporth_wav [-t nsecs] -i in.wav [-o out.wav] in.usp
+     Sporth           μsporth
+  440 0.5 sine <=> 440 sine 0.5 *
 
-  Examples:
+Syntax-wise, μsporth is equivalent to Sporth, possibly
+slightly more flexible since it allows numbers without
+leading zeros. There are only three types of elements in
+μsporth source code
 
-    $ usporth_wav -t 3 -r 8000 -o sine.wav examples/sine.usp
-    $ usporth_wav -i sine.wav -o sine_out.wav examples/in.usp
+  # numbers (floats)
+  1.23 -1.23 .23
+  # strings
+  _word "is equivalent to" 'string without spaces'
+  # ugens
+  sine + - * /
 
-Build
------
+Each element is compiled into a "pipe",
 
-To build the JACK interface, you need JACK [2] installed on
-your system, and to build the WAV interface, you need
-libsndfile [3] installed. If you want to add new ugens, you
-also need to have lua installed.
+  usp_pipe pipes = usporth_eval("440 sine 0.5 *");
 
-The text interface only requires a C99-compatible C compiler
-to build.
+     440 sine 0.5 *
+  =>
+     +f----+  +u-----+  +f----+  +u--+
+     | 440 +=>| sine +=>| 0.5 +=>| * +=>
+     +-----+  +------+  +-----+  +---+
 
-For Arch-based distros, you can use install all the optional
-dependencies by
+which is an instance of the element, with its own internal
+states, that can pump out and comsume values on the stack in
+a sequential, streaming fashion. We call a sequence of pipes
+a "pipeline".
 
-  $ pacman -S jack2 libsndfile lua
+Given a pipeline, we can evaluate all the pipes in the
+pipeline sequentially using
 
-For Debian-based distros, install by
+  pipes_init(&ctx, pipes); /* init all pipes */
+  pipes_tick(&ctx, pipes); /* compute a sample */
+  pipes_free(pipes);       /* clean up all pipes */
 
-  $ apt-get install libjack-jackd2-dev libsndfile1-dev lua5.1
+where `ctx` is the runtime context of μsporth, which holds
+the data that need to be shared among all ugens, such as the
+stack and the sampling rate. It can be initialized using
 
-For FreeBSD, install by
+  usp_ctx ctx;
+  usporth_init_ctx(&ctx, sr);
 
-  $ pkg install pkgconf audio/jack libsndfile lua51
-
-For macOS, you can use Homebrew [4]:
-
-  $ brew install pkgconf jack libsndfile lua
-
-For Windows, you can use MSYS2 with MinGW [5]:
-
-  $ pacman -S pkg-config mingw-w64-x86_64-libsndfile mingw-w64-x86_64-lua
-
-  For JACK, you need to build it from source:
-
-    $ pacman -S git base-devel python mingw-w64-x86_64-toolchain
-    $ git clone git://github.com/jackaudio/jack2.git
-    $ cd jack2
-    $ ./waf configure \
-          --prefix=${MINGW_PREFIX} \
-          --check-c-compiler=gcc \
-          --check-cxx-compiler=g++
-    $ ./waf build
-    $ ./waf install
-
-After you have sorted out the dependencies, use
-
-  $ ./configure
-
-to generate a `config.mk` file containing compiler flags,
-and run
-
-  $ make
-
-to build the programs.
+To get a full picture of the μsporth API, `main_text.c` is a
+great place to start. Then follow the implementation of
+these five functions to understand the rest of the
+implementation.
 
 Adding a new ugen
 -----------------
 
-To add a new unit generator, e.g. inv,
+To add a new unit generator, e.g. inv (this one is already
+implemented now),
 
 1. Create `inv.c` in `ugens` directory.
 
@@ -104,6 +111,9 @@ To add a new unit generator, e.g. inv,
      void ugen_inv_free(ugen_instance ugen)
 
    `ugen_instance` is how the ugen keeps an internal state.
+   It is similar to LADSPA's `LADSPA_Handle` [2] or LV2's
+   `LV2_Handle` [3].
+
    If the ugen needs an internal state, you need to store it
    in `pugen` during the init phase. Then the state will be
    available to you via the `ugen` argument during the tick
@@ -112,8 +122,8 @@ To add a new unit generator, e.g. inv,
    `sine.c`.
 
    I also recommend checking out `ftgen.c`. It shows you how
-   to use "extension data", which is how data can be shared
-   between different ugens. It also demonstrate two
+   to use "extension data", which is how custom data can be
+   shared between different ugens. It also demonstrate two
    important quirks
 
      1. String arguments are only pushed onto the stack in
@@ -149,8 +159,93 @@ To add a new unit generator, e.g. inv,
 
    This step might be automated in the future.
 
+Usage
+-----
+
+JACK interface:
+
+  $ usporth_jack in.usp
+
+Text interface:
+
+  $ usporth_text [-n nsamples] [-r sr] in.usp
+  $ usporth_text [-n nsamples] [-r sr] in.usp < in.txt
+
+  Examples:
+
+    $ usporth_text -n 20 -r 48000 examples/sine.usp
+    $ echo '1 2 3' | usporth_text -n 3 examples/in.usp
+
+WAV interface:
+
+  $ usporth_wav [-t nsecs] [-r sr] [-o out.wav] in.usp
+  $ usporth_wav [-t nsecs] -i in.wav [-o out.wav] in.usp
+
+  Examples:
+
+    $ usporth_wav -t 3 -r 8000 -o sine.wav examples/sine.usp
+    $ usporth_wav -i sine.wav -o sine_out.wav examples/in.usp
+
+Build
+-----
+
+To build the JACK interface, you need JACK [4] installed on
+your system, and to build the WAV interface, you need
+libsndfile [5] installed. If you want to add new ugens, you
+also need to have lua installed.
+
+The text interface only requires a C99-compatible C compiler
+to build.
+
+For Arch-based distros, you can use install all the optional
+dependencies by
+
+  $ pacman -S jack2 libsndfile lua
+
+For Debian-based distros, install by
+
+  $ apt-get install libjack-jackd2-dev libsndfile1-dev lua5.1
+
+For FreeBSD, install by
+
+  $ pkg install pkgconf audio/jack libsndfile lua51
+
+For macOS, you can use Homebrew [6]:
+
+  $ brew install pkgconf jack libsndfile lua
+
+For Windows, you can use MSYS2 with MinGW [7]:
+
+  $ pacman -S pkg-config mingw-w64-x86_64-libsndfile mingw-w64-x86_64-lua
+
+  If you want to compile the JACK interface, you need to
+  build JACK from source:
+
+    $ pacman -S git base-devel python mingw-w64-x86_64-toolchain
+    $ git clone git://github.com/jackaudio/jack2.git
+    $ cd jack2
+    $ ./waf configure \
+          --prefix=${MINGW_PREFIX} \
+          --check-c-compiler=gcc \
+          --check-cxx-compiler=g++
+    $ ./waf build
+    $ ./waf install
+
+After you have sorted out the dependencies, use
+
+  $ ./configure
+
+to generate a `config.mk` file containing compiler flags,
+and run
+
+  $ make
+
+to build the programs.
+
 [1]: https://pbat.ch/proj/sporth.html
-[2]: https://jackaudio.org/
-[3]: https://libsndfile.github.io/libsndfile/
-[4]: https://brew.sh/
-[5]: https://www.msys2.org/
+[2]: https://www.ladspa.org/
+[3]: https://lv2plug.in/
+[4]: https://jackaudio.org/
+[5]: https://libsndfile.github.io/libsndfile/
+[6]: https://brew.sh/
+[7]: https://www.msys2.org/
