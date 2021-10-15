@@ -240,7 +240,20 @@ and run
 
   $ make
 
-to build the programs.
+to build the programs. If you want to install μsporth to
+your system, use
+
+  $ make install
+
+or you can specify a destination with
+
+  $ make PREFIX=~/.local install
+
+Run
+
+  $ make uninstall
+
+to uninstall μsporth.
 
 [1]: https://pbat.ch/proj/sporth.html
 [2]: https://www.ladspa.org/

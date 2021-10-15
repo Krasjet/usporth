@@ -1,5 +1,7 @@
 -include config.mk
 
+PREFIX = /usr/local
+
 CC = cc
 LUA = lua
 CFLAGS = -std=c99 -Os -Wall -Wextra -pedantic -Wno-unused-parameter -I.
@@ -81,6 +83,16 @@ ugens.h: ugens.lua
 
 .c.o:
 	${CC} ${CFLAGS} ${CFLAGS.$@} -c -o $@ $<
+
+install: ${BINS}
+	install -d ${DESTDIR}${PREFIX}/bin
+	install -d ${DESTDIR}${PREFIX}/share/man/man1
+	install -m 755 ${BINS} ${DESTDIR}${PREFIX}/bin
+
+uninstall:
+	for f in ${BINS}; do\
+	  rm -f ${DESTDIR}${PREFIX}/bin/$$f; \
+	done
 
 clean:
 	rm -f ${BINS} *.o ugens/*.o *.exe out.wav
