@@ -1,0 +1,102 @@
+.TH USPORTH_WAV 1
+.SH NAME
+usporth_wav \-
+.SM WAV
+interface for μsporth
+.
+.SH SYNOPSIS
+.B usporth_wav
+.RB [ \-h ]
+.RB [ \-t
+.IR nsecs ]
+.B \-i
+.I in.wav
+.RB [ \-o
+.IR out.wav ]
+.I in.usp
+.br
+.B usporth_wav
+.RB [ \-h ]
+.RB [ \-t
+.IR nsecs ]
+.RB [ \-r
+.IR sr ]
+.RB [ \-o
+.IR out.wav ]
+.I in.usp
+.
+.SH DESCRIPTION
+.B usporth_wav
+is the
+.SM WAV
+interface for μsporth.
+It renders a μsporth script into
+.SM WAV
+audio file.
+.
+.SH OPTIONS
+.TP
+.B \-h
+Print usage and exit.
+.TP
+.BI \-t " nsecs"
+Set the number of seconds to be rendered.
+If unset, the default is
+.B 5
+seconds or the size of the input
+.SM WAV
+file.
+.TP
+.BI \-i " in.wav"
+Specify the input
+.SM WAV
+file that the script can access using the
+.B in
+ugen.
+.TP
+.BI \-o " out.wav"
+Specify the output
+.SM WAV
+file.
+The filename must ends in
+.BR .wav .
+.TP
+.BI \-r " sr"
+Set the sampling rate of the output file.
+The default is
+.B 44100
+Hz.
+This option is invalid when the
+.B -i
+option is used to specify an input file.
+In that case, the sampling rate defaults to the sampling
+rate of the input file.
+.SH EXAMPLES
+.
+Generate
+.B 3
+seconds of audio from
+.B sine.usp
+using a sampling rate of
+.B 8000
+Hz, to
+.BR sine.wav :
+.PP
+.in +4n
+.EX
+$ \fBusporth_wav\fP -t3 -r8000 -o sine.wav sine.usp
+.EE
+.in
+.PP
+Process
+.B sine.wav
+using
+.BR in.usp .
+Output the result to
+.BR out.wav :
+.PP
+.in +4n
+.EX
+$ \fBusporth_wav\fP -i sine.wav -o out.wav in.usp
+.EE
+.in

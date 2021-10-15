@@ -1,0 +1,120 @@
+.TH USPORTH_TEXT 1
+.SH NAME
+usporth_text \-
+Text interface for μsporth
+.
+.SH SYNOPSIS
+.B usporth_text
+.RB [ \-hs ]
+.RB [ \-n
+.IR nsamples ]
+.RB [ \-r
+.IR sr ]
+.I in.usp
+.br
+.B usporth_text
+.RB [ \-hs ]
+.RB [ \-n
+.IR nsamples ]
+.RB [ \-r
+.IR sr ]
+.I in.usp
+<
+.I in.txt
+.
+.SH DESCRIPTION
+.B usporth_text
+is the text interface for μsporth.
+It renders a μsporth script into a list of numbers.
+An example output would look like
+.PP
+.in +4n
+.EX
+0.100000000000
+0.200000000000
+0.300000000000
+0.400000000000
+0.500000000000
+.EE
+.in
+.PP
+or if the
+.B -s
+option is used,
+.PP
+.in +4n
+.EX
+0.000000 0.100000000000
+0.000023 0.200000000000
+0.000045 0.300000000000
+0.000068 0.400000000000
+0.000091 0.500000000000
+.EE
+.in
+.PP
+where the first column is the timestamp of the sample in
+seconds.
+.PP
+This output format can be directly piped into
+.B gnuplot(1)
+using
+.PP
+.in +4n
+.EX
+$ \fBgnuplot\fP -p -e "plot '< cat -' w lines"
+.EE
+.in
+.PP
+If the
+.B in
+ugen is used in the script,
+.B usporth_text
+would read space delimited input from
+.IR stdin .
+.
+.SH OPTIONS
+.TP
+.B \-h
+Print usage and exit.
+.TP
+.B \-s
+Turn on timestamp display.
+.TP
+.BI \-n " nsamples"
+Set the number of samples to be rendered.
+If unset, the default is
+.B 10
+samples.
+.TP
+.TP
+.BI \-r " sr"
+Set the sampling rate of the output file.
+If unset, the default is
+.B 44100
+Hz.
+.SH EXAMPLES
+.
+Generate
+.B 20
+samples of audio from
+.B sine.usp
+using a sampling rate of
+.B 48000
+Hz, with timestamped display:
+.PP
+.in +4n
+.EX
+$ \fBusporth_text\fP -s -n20 -r48000 sine.usp
+.EE
+.in
+.PP
+Process input
+.B '1 2 3'
+using
+.BR in.usp :
+.PP
+.in +4n
+.EX
+$ \fBecho\fP '1 2 3' | \fBusporth_text\fP -n3 in.usp
+.EE
+.in

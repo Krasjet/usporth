@@ -190,6 +190,8 @@ WAV interface:
     $ usporth_wav -t 3 -r 8000 -o sine.wav examples/sine.usp
     $ usporth_wav -i sine.wav -o sine_out.wav examples/in.usp
 
+See the man pages for details.
+
 Build
 -----
 

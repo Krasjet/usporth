@@ -1,0 +1,50 @@
+.TH USPORTH_JACK 1
+.SH NAME
+usporth_jack \-
+.SM JACK
+interface for μsporth
+.
+.SH SYNOPSIS
+.B usporth_jack
+.I in.usp
+.
+.SH DESCRIPTION
+.B usporth_jack
+is the
+.SM JACK
+interface for μsporth.
+It generates real-time audio from a μsporth script file.
+.
+.PP
+To use
+.BR usporth_jack ,
+you need to first start a
+.SM JACK
+server using
+.B jackd(1)
+or
+.BR qjackctl(1) .
+.B usporth_jack
+automatically connects its output to your physical audio
+output device, but you have to connect the input signal
+manually, using
+.B jack_connect(1)
+or
+the
+.I Graph
+or
+.I Connect
+button in
+.BR qjackctl(1) .
+.PP
+.in +4n
+.EX
++------+--------+    +---------+-----+
+| prog |        |    | usporth |     |
++------+        |    +---------+     |
+|               |    |               |
+|     audio_out +--->+ in        out +-->
++---------------+    +---------------+
+.EE
+.in
+.PP

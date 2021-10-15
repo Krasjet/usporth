@@ -1,6 +1,7 @@
 -include config.mk
 
 PREFIX = /usr/local
+MANDIR = ${PREFIX}/share/man
 
 CC = cc
 LUA = lua
@@ -11,6 +12,8 @@ BINS = \
 	usporth_text \
 	${JACK_BINS} \
 	${SF_BINS}
+
+MANS = ${BINS:%=%.1.gz}
 
 OBJ = \
 	usporth.o \
@@ -84,17 +87,25 @@ ugens.h: ugens.lua
 .c.o:
 	${CC} ${CFLAGS} ${CFLAGS.$@} -c -o $@ $<
 
-install: ${BINS}
+.SUFFIXES: .1 .1.gz
+.1.1.gz:
+	gzip < $< > $@
+
+install: ${BINS} ${MANS}
 	install -d ${DESTDIR}${PREFIX}/bin
-	install -d ${DESTDIR}${PREFIX}/share/man/man1
+	install -d ${DESTDIR}${MANDIR}/man1
 	install -m 755 ${BINS} ${DESTDIR}${PREFIX}/bin
+	install -m 644 ${MANS} ${DESTDIR}${MANDIR}/man1
 
 uninstall:
 	for f in ${BINS}; do\
 	  rm -f ${DESTDIR}${PREFIX}/bin/$$f; \
 	done
+	for f in ${MANS}; do\
+	  rm -f ${DESTDIR}${MANDIR}/man1/$$f; \
+	done
 
 clean:
-	rm -f ${BINS} *.o ugens/*.o *.exe out.wav
+	rm -f ${BINS} *.o ugens/*.o *.exe out.wav *.1.gz
 
-.PHONY: clean
+.PHONY: clean install uninstall
