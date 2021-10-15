@@ -38,11 +38,25 @@ typedef struct {
  * slope later in the transition */
 #define atk_eps .29
 
-/* pole needed to reach ratio of jump in t sec */
-static double
-ratio2pole(double t, double ratio, double sr)
+static void
+update_fltr(double *base, double *pole,
+            double t, double ratio, double target, double sr)
 {
-  return pow(ratio, 1/(t*sr));
+  if (t == 0) { /* instant transition, out = target */
+    *pole = 0;
+    *base = target;
+  } else {
+    /* pole needed to reach ratio of jump in t sec
+     *        +-----  target
+     *       /------  target + ratio*(curr-target)
+     *      /
+     *     /
+     *  --+           curr
+     *    |--| t
+     */
+    *pole = pow(ratio, 1/(t*sr));
+    *base = (1-*pole)*target;
+  }
 }
 
 ugen_status
@@ -98,19 +112,37 @@ ugen_adsr_tick(usp_ctx *ctx, ugen_instance ugen)
      *  --+       0         (min)
      */
     target = 1 + atk_eps;
-    pole = ratio2pole(atk, atk_eps/target, sr);
-    base = (1-pole)*target;
+    update_fltr(&base, &pole, atk, atk_eps/target, target, sr);
   } else if (gate < gate_old) { /* 1 -> 0 */
     state = RELEASE;
-    /*
-     * --+        sus   (max)
-     *    \
-     *     +----- 0     (actual min)
-     *     ------ -eps  (target)
-     */
-    target = -eps;
-    pole = ratio2pole(rel, eps/(sus+eps), sr);
-    base = (1-pole)*target;
+    if (sus <= 0) {
+      /* filter blows up, we need to do something
+       * different here */
+      if (out > 0) {
+        /* if current output > 0, we reinterpret the release
+         * time as the time to reach from current output to 0
+         * --+        curr  (max)
+         *    \
+         *     +----- 0     (actual min)
+         *     ------ -eps  (target)
+         */
+        target = -eps;
+        update_fltr(&base, &pole, rel, eps/(out+eps), target, sr);
+      } else {
+        /* otherwise, go to idle state directly */
+        state = IDLE;
+      }
+    } else {
+      /* normal case, release time is the time to get from
+       * sus to 0
+       * --+        sus   (max)
+       *    \
+       *     +----- 0     (actual min)
+       *     ------ -eps  (target)
+       */
+      target = -eps;
+      update_fltr(&base, &pole, rel, eps/(sus+eps), target, sr);
+    }
   }
 
   /* 2. move towards target */
@@ -133,8 +165,7 @@ ugen_adsr_tick(usp_ctx *ctx, ugen_instance ugen)
        *     ------ sus-eps  (target)
        */
       target = sus-eps;
-      pole = ratio2pole(decay, eps/(1-sus+eps), sr);
-      base = (1-pole)*target;
+      update_fltr(&base, &pole, decay, eps/(1-sus+eps), target, sr);
     }
     break;
   case DECAY:
