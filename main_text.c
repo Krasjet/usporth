@@ -49,7 +49,7 @@ read_file(const char *path)
 static void
 usage(const char *name)
 {
-  printf("usage: %s [-h] [-n nsamples] [-r sr] in.usp\n", name);
+  printf("usage: %s [-sh] [-n nsamples] [-r sr] in.usp\n", name);
 }
 
 int
@@ -57,14 +57,18 @@ main(int argc, char *argv[])
 {
   char *path, *src;
   int sr = DEFAULT_SR;
+  int timestamp = 0;
   long i, n = DEFAULT_N;
 
   int c;
-  while ((c = getopt(argc, argv, "hn:r:")) != -1) {
+  while ((c = getopt(argc, argv, "hsn:r:")) != -1) {
     switch (c) {
     case 'h':
       usage(argv[0]);
       return 0;
+    case 's':
+      timestamp = 1;
+      break;
     case 'n':
       n = atol(optarg);
       if (n < 1)
@@ -105,7 +109,10 @@ main(int argc, char *argv[])
   /* 5. compute samples */
   for (i = 0; i < n; ++i) {
     pipes_tick(&ctx, pipes);
-    printf("%.9g\n", usp_pop_flt(&ctx));
+    if (timestamp)
+      printf("%f %.9g\n", i/(double)sr, usp_pop_flt(&ctx));
+    else
+      printf("%.9g\n", usp_pop_flt(&ctx));
   }
 
   /* 6. clean up */

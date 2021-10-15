@@ -168,13 +168,17 @@ JACK interface:
 
 Text interface:
 
-  $ usporth_text [-n nsamples] [-r sr] in.usp
-  $ usporth_text [-n nsamples] [-r sr] in.usp < in.txt
+  $ usporth_text [-s] [-n nsamples] [-r sr] in.usp
+  $ usporth_text [-s] [-n nsamples] [-r sr] in.usp < in.txt
 
   Examples:
 
-    $ usporth_text -n 20 -r 48000 examples/sine.usp
+    $ usporth_text -s -n 20 -r 48000 examples/sine.usp
     $ echo '1 2 3' | usporth_text -n 3 examples/in.usp
+
+  The output can be directly piped into gnuplot using
+
+    $ gnuplot -p -e "plot '< cat -' w lines"
 
 WAV interface:
 
