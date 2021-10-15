@@ -5,7 +5,8 @@
 
 /* index into ctx.ext */
 enum {
-  EXT_FTMAP = 0
+  EXT_FTMAP = 0,
+  EXT_VAR
 };
 
 /* ----- function table mapping ----- */
@@ -25,5 +26,18 @@ void ftmap_push(ftmap *ft, usp_flt val);
 /* find ftmap matching name, returns NULL when not found */
 ftmap *ftmap_find(usp_ctx *ctx, const char *name);
 void ftmap_free(ftmap *ft);
+
+/* ----- variables ----- */
+typedef struct var {
+  const char *name;
+  usp_flt val;
+  struct var *next;
+} var;
+
+/* new variable and add to context */
+var *var_new(usp_ctx *ctx, const char *name, usp_flt v);
+/* find variable matching name, returns NULL when not found */
+var *var_find(usp_ctx *ctx, const char *name);
+void var_free(var *v);
 
 #endif

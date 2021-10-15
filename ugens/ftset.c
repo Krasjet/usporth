@@ -25,8 +25,8 @@ ugen_ftset_init(usp_ctx *ctx, ugen_instance *pugen)
 
   self->ft = ftmap_find(ctx, name);
   if (!self->ft) {
-      fprintf(stderr, "[error] ftset: fail to find table %s\n", name);
-      return UGEN_ERR;
+    fprintf(stderr, "[error] ftset: fail to find table %s\n", name);
+    return UGEN_ERR;
   }
   self->ft->tbl[index] = val;
   return UGEN_OK;

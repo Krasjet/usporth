@@ -23,8 +23,8 @@ ugen_ftget_init(usp_ctx *ctx, ugen_instance *pugen)
 
   self->ft = ftmap_find(ctx, name);
   if (!self->ft) {
-      fprintf(stderr, "[error] ftget: fail to find table %s\n", name);
-      return UGEN_ERR;
+    fprintf(stderr, "[error] ftget: fail to find table %s\n", name);
+    return UGEN_ERR;
   }
   usp_push_flt(ctx, self->ft->tbl[index]);
   return UGEN_OK;

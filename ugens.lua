@@ -259,6 +259,26 @@ local ugens = {
     description = 'convert midi note number to frequency'
   },
 
+  ['set'] = {
+    input = {
+      {name = 'val', type = 'f'},
+      {name = 'var name', type = 's'},
+    },
+    output = { },
+    description = 'set variable to val, or create new variable if not exist'
+  },
+
+  ['get'] = {
+    input = {
+      {name = 'var name', type = 's'},
+    },
+    output = {
+      {name = 'val', type = 'f'},
+    },
+    description = 'get variable value'
+  },
+
+
   -- add more ugens here
 }
 
