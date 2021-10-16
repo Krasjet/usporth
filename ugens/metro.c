@@ -34,7 +34,7 @@ ugen_metro_tick(usp_ctx *ctx, ugen_instance ugen)
 
   if (phs >= 1) {
     out = 1;
-    phs -= 1.0;
+    phs--;
   }
   phs += freq * self->invsr;
   self->phs = phs;
