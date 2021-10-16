@@ -34,7 +34,11 @@ OBJ = \
 	ugens/tseq.o \
 	ugens/var.o \
 	ugens/get.o \
-	ugens/set.o
+	ugens/set.o \
+	ugens/mem.o \
+	ugens/at.o \
+	ugens/smoo.o \
+	ugens/line.o
 
 OBJ_JACK = ${OBJ} main_jack.o
 OBJ_TEXT = ${OBJ} main_text.o
@@ -74,6 +78,10 @@ ugens/tseq.o: usporth.h usputil.h ugens/ext.h
 ugens/var.o: usporth.h usputil.h ugens/ext.h
 ugens/get.o: usporth.h usputil.h ugens/ext.h
 ugens/set.o: usporth.h usputil.h ugens/ext.h
+ugens/line.o: usporth.h usputil.h
+ugens/mem.o: usporth.h usputil.h
+ugens/at.o: usporth.h usputil.h
+ugens/smoo.o: usporth.h usputil.h
 
 CFLAGS.main_jack.o = ${JACK_CFLAGS}
 CFLAGS.main_wav.o = ${SF_CFLAGS}

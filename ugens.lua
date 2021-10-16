@@ -278,6 +278,50 @@ local ugens = {
     description = 'get variable value'
   },
 
+  ['mem'] = {
+    input = {
+      {name = 'sample', type = 'f'},
+    },
+    output = {
+      {name = 'delayed', type = 'f'},
+    },
+    description = '1 sample static delay, similar to mem primitive in faust'
+  },
+
+  ['@'] = { alias = 'at' },
+  ['at'] = {
+    input = {
+      {name = 'sample', type = 'f'},
+      {name = 'delay time (sample)', type = 'f'},
+    },
+    output = {
+      {name = 'delayed', type = 'f'},
+    },
+    description = 'static delay in samples, similar to @ primitive in faust'
+  },
+
+  ['smoo'] = {
+    input = {
+      {name = 'in', type = 'f'},
+    },
+    output = {
+      {name = 'out', type = 'f'},
+    },
+    description = 'simple parameter smoothing with one pole filter'
+  },
+
+  ['line'] = {
+    input = {
+      {name = 'trigger', type = 'f'},
+      {name = 'a', type = 'f'},
+      {name = 'dur (sec)', type = 'f'},
+      {name = 'b', type = 'f'},
+    },
+    output = {
+      {name = 'sample', type = 'f'},
+    },
+    description = 'ramp from a to b in dur seconds on trigger'
+  },
 
   -- add more ugens here
 }

@@ -1,0 +1,21 @@
+# line.usp: evolving pattern
+
+0.625 metro
+-100 0.8 0 line
+
+2.5 metro
+0 0.4 200 line
+
+0.75 metro
+200 0.5 0 line
+
+1.5 metro
+100 0.5 -100 line
+
+3 metro
+100 0.2 -100 line
+
++ + + + smoo
+sine
+
+0.6 * # volume
