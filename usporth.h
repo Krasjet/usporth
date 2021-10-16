@@ -12,6 +12,10 @@ typedef float usp_flt;
 #define strtoflt strtof
 #define sinflt sinf
 #define powflt powf
+#define absflt fabsf
+/* flush denormal */
+#define FL_MIN FLT_MIN
+#define FLUSHFLT(x) (x = absflt(x)<FL_MIN ? 0 : x)
 
 /* data type for stack values */
 typedef enum usp_valtype {

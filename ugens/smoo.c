@@ -31,6 +31,7 @@ ugen_smoo_tick(usp_ctx *ctx, ugen_instance ugen)
   in = usp_pop_flt(ctx);
 
   mem = FL(0.001)*in + FL(0.999)*mem;
+  FLUSHFLT(mem);
 
   usp_push_flt(ctx, mem);
   self->mem = mem;
