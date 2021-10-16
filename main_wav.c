@@ -55,7 +55,7 @@ sf_finish(void)
 
 static usp_pipe *pipes = NULL;
 static usp_ctx ctx;
-static float sample_in, sample_out;
+static float sample_in;
 
 /* ----------- in ugen redefined ----------- */
 ugen_status
@@ -104,12 +104,30 @@ is_wav(const char *s)
   return s && strcmp(s, ".wav") == 0;
 }
 
+/* libsndfile is horribly slow for writing one sample at a
+ * time. we get ~50x speed up by doing bulk processing */
+#define N 1024
+static usp_flt in[N], out[N];
+
+static void
+process(size_t nframes)
+{
+  size_t i;
+  if (sf_in)
+    sf_readf_float(sf_in, in, nframes);
+  for (i = 0; i < nframes; ++i) {
+    sample_in = in[i];
+    pipes_tick(&ctx, pipes);
+    out[i] = usp_pop_flt(&ctx);
+  }
+  sf_writef_float(sf_out, out, nframes);
+}
+
 int
 main(int argc, char *argv[])
 {
   char *path, *src;
   char *path_out = "out.wav", *path_in = NULL;
-  size_t i;
 
   int c;
   while ((c = getopt(argc, argv, "hi:o:t:r:")) != -1) {
@@ -171,13 +189,11 @@ main(int argc, char *argv[])
     die("fail to init pipeline");
 
   /* 5. compute samples */
-  for (i = 0; i < nframes; ++i) {
-    if (sf_in)
-      sf_readf_float(sf_in, &sample_in, 1);
-    pipes_tick(&ctx, pipes);
-    sample_out = usp_pop_flt(&ctx);
-    sf_writef_float(sf_out, &sample_out, 1);
+  while (nframes >= N) {
+    process(N);
+    nframes -= N;
   }
+  process(nframes); /* remaining samples */
 
   /* 6. clean up */
   pipes_free(pipes);
