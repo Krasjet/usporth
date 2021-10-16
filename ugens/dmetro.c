@@ -34,9 +34,8 @@ ugen_dmetro_tick(usp_ctx *ctx, ugen_instance ugen)
   if (count == 0) {
     out = 1;
     count = ctx->sr * time;
-  } else {
-    count--;
   }
+  count--;
 
   usp_push_flt(ctx, out);
   self->count = count;
