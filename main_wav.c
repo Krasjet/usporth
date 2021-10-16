@@ -106,7 +106,7 @@ is_wav(const char *s)
 
 /* libsndfile is horribly slow for writing one sample at a
  * time. we get ~50x speed up by doing bulk processing */
-#define N 1024
+#define N 4096
 static usp_flt in[N], out[N];
 
 static void
