@@ -28,11 +28,12 @@ standalone programs:
   usporth_wav:  offline rendering interface via libsndfile
 
 μsporth doesn't include all the unit generators in Sporth.
-Existing ugens are mostly to demonstrate how you can extend
-and use the language. You can treat it as a "bring your own
-ugens" version of Sporth, a blank slate for you to implement
-your own language, also a great playground to experiment
-with DSP algorithms in C.
+Existing ugens are mostly to help developing and testing new
+ugens and to demonstrate how you can extend and use the
+language. You can treat it as a "bring your own ugens"
+version of Sporth, a blank slate for you to implement your
+own language, also a great playground to experiment with DSP
+algorithms in C.
 
 How to read
 -----------
@@ -124,7 +125,7 @@ implemented now),
    I also recommend checking out `ftgen.c`. It shows you how
    to use "extension data", which is how custom data can be
    shared between different ugens. It also demonstrate two
-   important quirks
+   important quirks:
 
      1. String arguments are only pushed onto the stack in
         init phase, not in tick phase.
