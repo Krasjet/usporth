@@ -41,7 +41,7 @@ How to read
 To understand the implementation of μsporth, I suggest you
 start with "The Stack" section of the Sporth Cookbook
 
-  https://pbat.ch/proj/cook/stack.html
+  https://web.archive.org/web/20211015023825/https://pbat.ch/proj/cook/stack.html
 
 Notice that the `sine` ugen of μsporth doesn't include the
 amplitude parameter, so
@@ -262,7 +262,7 @@ Run
 
 to uninstall μsporth.
 
-[1]: https://pbat.ch/proj/sporth.html
+[1]: https://web.archive.org/web/20211117190245/https://pbat.ch/proj/sporth.html
 [2]: https://www.ladspa.org/
 [3]: https://lv2plug.in/
 [4]: https://jackaudio.org/
