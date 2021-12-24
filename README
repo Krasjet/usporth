@@ -204,7 +204,7 @@ also need to have lua installed.
 The text interface only requires a C99-compatible C compiler
 to build.
 
-For Arch-based distros, you can use install all the optional
+For Arch-based distros, you can install all the optional
 dependencies by
 
   $ pacman -S jack2 libsndfile lua
